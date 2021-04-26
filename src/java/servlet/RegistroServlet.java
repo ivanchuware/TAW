@@ -48,23 +48,23 @@ public class RegistroServlet extends HttpServlet {
             String password=request.getParameter("nacimiento");  
             
             try{  
-                Class.forName("oracle.jdbc.driver.OracleDriver");  
+Class.forName("org.apache.derby.jdbc.ClientDriver");  
                 Connection con=DriverManager.getConnection(  
-                "jdbc:derby://localhost:1527/db","system","oracle");  
+                "jdbc:derby://localhost:1527/db","usuario","usuario");  
 
                 PreparedStatement ps=con.prepareStatement(  
-                "insert into usuario values(?,?,?,?,?,?,?,?,?,?)");  
+                "insert into usuario (nombre, apellidos, domicilio, ciudad, edad, genero, email, rol, password) values(?,?,?,?,?,?,?,?,?)");  
                 
                 
-                ps.setString(2,nombre);  
-                ps.setString(3,apellido);  
-                ps.setString(4,domicilio);  
-                ps.setString(5,ciudad);
-                ps.setString(6,nacimiento);
-                ps.setString(7,sexo);
-                ps.setString(8,email);
-                ps.setInt(9,1);
-                ps.setString(10, password);
+                ps.setString(1,nombre);  
+                ps.setString(2,apellido);  
+                ps.setString(3,domicilio);  
+                ps.setString(4,ciudad);
+                ps.setString(5,nacimiento);
+                ps.setString(6,sexo);
+                ps.setString(7,email);
+                ps.setInt(8,1);
+                ps.setString(9, password);
 
                 int i=ps.executeUpdate();  
                 if(i>0)  
