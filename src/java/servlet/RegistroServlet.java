@@ -44,8 +44,8 @@ public class RegistroServlet extends HttpServlet {
             String domicilio=request.getParameter("domicilio");  
             String sexo=request.getParameter("sex");  
             String nacimiento=request.getParameter("nacimiento");
-            String email=request.getParameter("nacimiento");  
-            String password=request.getParameter("nacimiento");  
+            String email=request.getParameter("email");  
+            String password=request.getParameter("password");  
             
             try{  
 Class.forName("org.apache.derby.jdbc.ClientDriver");  
