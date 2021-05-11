@@ -110,6 +110,10 @@ and open the template in the editor.
                 <%
                     }
                 %>
+                <div class="block">
+                    <input type="submit" value="Registrarse">
+                </div>
+                
             </form>
         </div>
     </body>
