@@ -6,9 +6,11 @@
 package eventos.dao;
 
 import eventos.entity.Usuario;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -28,5 +30,17 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
     public UsuarioFacade() {
         super(Usuario.class);
     }
-    
+    public Usuario findByEmail (String email) {
+        Query q;
+        List<Usuario> lista;
+        
+        q = this.em.createNamedQuery("Usuario.findByEmail");
+        q.setParameter("email", email);
+        lista = q.getResultList();
+        if (lista != null && lista.isEmpty() == false) {
+            return lista.get(0);
+        } else {
+            return null;
+        }                                
+    }
 }
