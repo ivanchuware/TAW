@@ -3,10 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package app.servlet;
+package eventos.servlet;
 
+import eventos.dao.RolesFacade;
+import eventos.dao.UsuarioFacade;
+import eventos.entity.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.ejb.EJB;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,6 +28,11 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "ServletRegistro", urlPatterns = {"/ServletRegistro"})
 public class ServletRegistro extends HttpServlet {
 
+    @EJB
+    private UsuarioFacade usuarioFacade;
+    
+    @EJB
+    private RolesFacade rolesFacade;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -32,6 +45,8 @@ public class ServletRegistro extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        Date fecha = new Date();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String nombre=request.getParameter("nombre");  
         String apellido=request.getParameter("apellido");  
         String ciudad=request.getParameter("ciudad");  
@@ -51,9 +66,74 @@ public class ServletRegistro extends HttpServlet {
         request.setAttribute("fecha", nacimiento);
         request.setAttribute("email", email);
         
+        
         if (nombre.isEmpty()) {
-            errorMsg += "Nombre vacío";
+            error = true;
+            errorMsg += " Nombre vacío";
         }
+        if (apellido.isEmpty()) {
+            error = true;
+            errorMsg += " Apellido vacío";
+        }
+        if (ciudad.isEmpty()) {
+            error = true;
+            errorMsg += " Ciudad vacía";
+        }
+        if (domicilio.isEmpty()) {
+            error = true;
+            errorMsg += " Domicilio vacío";
+        }
+        if (sexo == null) {
+            error = true;
+            errorMsg += " Sexo no especificado";
+        }
+        if (nacimiento.isEmpty()) {
+            error = true;
+            errorMsg += " Fecha de nacimiento no especificada";
+        }
+        if (email.isEmpty()) {
+            error = true;
+            errorMsg += " E-mail vacío";
+        }
+        if (password.isEmpty()) {
+            error = true;
+            errorMsg += " Contraseña vacía";
+        }
+        
+        try {
+            fecha = df.parse(nacimiento);
+        } catch (Exception e) {
+            error = true;
+        }
+        request.setAttribute("error", error);
+        request.setAttribute("errorMsg", errorMsg);
+        
+        if (!error) {
+            Usuario usuario = new Usuario();
+            usuario.setNombre(nombre);
+            usuario.setApellidos(apellido);
+            usuario.setCiudad(ciudad);
+            usuario.setEmail(email);
+            char genero;
+            if (sexo.equals("male")) {
+                genero = 'M';
+            } else {
+                genero = 'F';
+            }
+            usuario.setGenero(genero);
+            usuario.setPassword(password);
+            usuario.setNacimiento(fecha);
+            usuario.setDomicilio(domicilio);
+            usuario.setRol(rolesFacade.find(3));
+            
+            usuarioFacade.create(usuario);
+         
+        } else {
+            RequestDispatcher rd = request.getRequestDispatcher("registro.jsp");
+            rd.forward(request, response);
+        }
+        
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

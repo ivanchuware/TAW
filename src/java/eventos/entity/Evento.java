@@ -6,8 +6,8 @@
 package eventos.entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author aaron
+ * @author EloyB
  */
 @Entity
 @Table(name = "EVENTO")
@@ -88,7 +88,7 @@ public class Evento implements Serializable {
         @JoinColumn(name = "ID_EVENTO", referencedColumnName = "ID_EVENTO")}, inverseJoinColumns = {
         @JoinColumn(name = "ID_USUARIO", referencedColumnName = "ID_USUARIO")})
     @ManyToMany
-    private List<Usuario> usuarioList;
+    private Collection<Usuario> usuarioCollection;
 
     public Evento() {
     }
@@ -193,12 +193,12 @@ public class Evento implements Serializable {
     }
 
     @XmlTransient
-    public List<Usuario> getUsuarioList() {
-        return usuarioList;
+    public Collection<Usuario> getUsuarioCollection() {
+        return usuarioCollection;
     }
 
-    public void setUsuarioList(List<Usuario> usuarioList) {
-        this.usuarioList = usuarioList;
+    public void setUsuarioCollection(Collection<Usuario> usuarioCollection) {
+        this.usuarioCollection = usuarioCollection;
     }
 
     @Override

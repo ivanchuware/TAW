@@ -6,14 +6,14 @@
 package eventos.entity;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author aaron
+ * @author EloyB
  */
 @Entity
 @Table(name = "ROLES")
@@ -42,8 +42,8 @@ public class Roles implements Serializable {
     @Size(max = 50)
     @Column(name = "DESCRIPCION")
     private String descripcion;
-    @ManyToMany(mappedBy = "rolesList")
-    private List<Usuario> usuarioList;
+    @OneToMany(mappedBy = "rol")
+    private Collection<Usuario> usuarioCollection;
 
     public Roles() {
     }
@@ -69,12 +69,12 @@ public class Roles implements Serializable {
     }
 
     @XmlTransient
-    public List<Usuario> getUsuarioList() {
-        return usuarioList;
+    public Collection<Usuario> getUsuarioCollection() {
+        return usuarioCollection;
     }
 
-    public void setUsuarioList(List<Usuario> usuarioList) {
-        this.usuarioList = usuarioList;
+    public void setUsuarioCollection(Collection<Usuario> usuarioCollection) {
+        this.usuarioCollection = usuarioCollection;
     }
 
     @Override
