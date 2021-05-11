@@ -6,8 +6,7 @@
 package eventos.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,14 +15,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -31,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author EloyB
+ * @author aaron
  */
 @Entity
 @Table(name = "USUARIO")
@@ -44,9 +41,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Usuario.findByPassword", query = "SELECT u FROM Usuario u WHERE u.password = :password")
     , @NamedQuery(name = "Usuario.findByDomicilio", query = "SELECT u FROM Usuario u WHERE u.domicilio = :domicilio")
     , @NamedQuery(name = "Usuario.findByCiudad", query = "SELECT u FROM Usuario u WHERE u.ciudad = :ciudad")
+    , @NamedQuery(name = "Usuario.findByEdad", query = "SELECT u FROM Usuario u WHERE u.edad = :edad")
     , @NamedQuery(name = "Usuario.findByGenero", query = "SELECT u FROM Usuario u WHERE u.genero = :genero")
-    , @NamedQuery(name = "Usuario.findByEmail", query = "SELECT u FROM Usuario u WHERE u.email = :email")
-    , @NamedQuery(name = "Usuario.findByNacimiento", query = "SELECT u FROM Usuario u WHERE u.nacimiento = :nacimiento")})
+    , @NamedQuery(name = "Usuario.findByEmail", query = "SELECT u FROM Usuario u WHERE u.email = :email")})
 public class Usuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -72,6 +69,8 @@ public class Usuario implements Serializable {
     @Size(max = 120)
     @Column(name = "CIUDAD")
     private String ciudad;
+    @Column(name = "EDAD")
+    private Integer edad;
     @Basic(optional = false)
     @NotNull
     @Column(name = "GENERO")
@@ -82,18 +81,17 @@ public class Usuario implements Serializable {
     @Size(min = 1, max = 120)
     @Column(name = "EMAIL")
     private String email;
-    @Column(name = "NACIMIENTO")
-    @Temporal(TemporalType.DATE)
-    private Date nacimiento;
-    @ManyToMany(mappedBy = "usuarioCollection")
-    private Collection<Evento> eventoCollection;
+    @ManyToMany(mappedBy = "usuarioList")
+    private List<Evento> eventoList;
+    @JoinTable(name = "USUARIO_ROLES", joinColumns = {
+        @JoinColumn(name = "ID_USUARIO", referencedColumnName = "ID_USUARIO")}, inverseJoinColumns = {
+        @JoinColumn(name = "ID_ROL", referencedColumnName = "ID_ROL")})
+    @ManyToMany
+    private List<Roles> rolesList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario2")
-    private Collection<Conversacion> conversacionCollection;
+    private List<Conversacion> conversacionList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario1")
-    private Collection<Conversacion> conversacionCollection1;
-    @JoinColumn(name = "ROL", referencedColumnName = "ID_ROL")
-    @ManyToOne
-    private Roles rol;
+    private List<Conversacion> conversacionList1;
 
     public Usuario() {
     }
@@ -157,6 +155,14 @@ public class Usuario implements Serializable {
         this.ciudad = ciudad;
     }
 
+    public Integer getEdad() {
+        return edad;
+    }
+
+    public void setEdad(Integer edad) {
+        this.edad = edad;
+    }
+
     public Character getGenero() {
         return genero;
     }
@@ -173,47 +179,40 @@ public class Usuario implements Serializable {
         this.email = email;
     }
 
-    public Date getNacimiento() {
-        return nacimiento;
+    @XmlTransient
+    public List<Evento> getEventoList() {
+        return eventoList;
     }
 
-    public void setNacimiento(Date nacimiento) {
-        this.nacimiento = nacimiento;
+    public void setEventoList(List<Evento> eventoList) {
+        this.eventoList = eventoList;
     }
 
     @XmlTransient
-    public Collection<Evento> getEventoCollection() {
-        return eventoCollection;
+    public List<Roles> getRolesList() {
+        return rolesList;
     }
 
-    public void setEventoCollection(Collection<Evento> eventoCollection) {
-        this.eventoCollection = eventoCollection;
-    }
-
-    @XmlTransient
-    public Collection<Conversacion> getConversacionCollection() {
-        return conversacionCollection;
-    }
-
-    public void setConversacionCollection(Collection<Conversacion> conversacionCollection) {
-        this.conversacionCollection = conversacionCollection;
+    public void setRolesList(List<Roles> rolesList) {
+        this.rolesList = rolesList;
     }
 
     @XmlTransient
-    public Collection<Conversacion> getConversacionCollection1() {
-        return conversacionCollection1;
+    public List<Conversacion> getConversacionList() {
+        return conversacionList;
     }
 
-    public void setConversacionCollection1(Collection<Conversacion> conversacionCollection1) {
-        this.conversacionCollection1 = conversacionCollection1;
+    public void setConversacionList(List<Conversacion> conversacionList) {
+        this.conversacionList = conversacionList;
     }
 
-    public Roles getRol() {
-        return rol;
+    @XmlTransient
+    public List<Conversacion> getConversacionList1() {
+        return conversacionList1;
     }
 
-    public void setRol(Roles rol) {
-        this.rol = rol;
+    public void setConversacionList1(List<Conversacion> conversacionList1) {
+        this.conversacionList1 = conversacionList1;
     }
 
     @Override
