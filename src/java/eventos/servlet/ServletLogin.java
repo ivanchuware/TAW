@@ -5,8 +5,12 @@
  */
 package eventos.servlet;
 
+import eventos.dao.UsuarioFacade;
+import eventos.entity.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.ejb.EJB;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,11 +19,13 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author EloyB
+ * @author Ivanchu
  */
-@WebServlet(name = "ServletRegistro", urlPatterns = {"/ServletRegistro"})
-public class ServletRegistro extends HttpServlet {
-
+@WebServlet(name = "ServletLogin", urlPatterns = {"/ServletLogin"})
+public class ServletLogin extends HttpServlet {
+    
+    @EJB
+    private UsuarioFacade usuarioFacade;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -31,29 +37,20 @@ public class ServletRegistro extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        String nombre=request.getParameter("nombre");  
-        String apellido=request.getParameter("apellido");  
-        String ciudad=request.getParameter("ciudad");  
-        String domicilio=request.getParameter("domicilio");  
-        String sexo=request.getParameter("sex");  
-        String nacimiento=request.getParameter("nacimiento");
-        String email=request.getParameter("email");  
-        String password=request.getParameter("password");
-        boolean error = false;
-        String errorMsg = "";
-        
-        request.setAttribute("nombre", nombre);
-        request.setAttribute("apellido", apellido);
-        request.setAttribute("ciudad", ciudad);
-        request.setAttribute("domicilio", domicilio);
-        request.setAttribute("sexo", sexo);
-        request.setAttribute("fecha", nacimiento);
-        request.setAttribute("email", email);
-        
-        if (nombre.isEmpty()) {
-            errorMsg += "Nombre vacío";
-        }
+            String stremail = request.getParameter("correo");
+            String strpwd = request.getParameter("contrasena");
+            Usuario user = usuarioFacade.findByEmail(stremail);
+            if (user != null && strpwd.equals(user.getPassword()))
+            {
+                request.setAttribute("usuario", user);
+                RequestDispatcher rd = request.getRequestDispatcher("inicio.jsp");
+                rd.forward(request, response);
+            }
+            else 
+            {
+                RequestDispatcher rd = request.getRequestDispatcher("fallologin.jsp");
+                rd.forward(request,response);
+            }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

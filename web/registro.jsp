@@ -22,7 +22,7 @@ and open the template in the editor.
     <body>
         <ul>
             <li><a  href="index.html">Inicio</a></li>
-            <li><a href="news.asp">Identificarse</a></li>
+            <li><a href="login.jsp">Identificarse</a></li>
             <li><a class="active" href="registro.jsp">Registro</a></li>
             <li style="float:right"><a href="about.asp">Sobre nosotros</a></li>
         </ul>
