@@ -79,7 +79,7 @@ and open the template in the editor.
                     <label for="nombre">Nombre: </label><input type="text" maxlength="20" size="25" name="nombre" value="<%=nombre%>">
                 </div>
                 <div class="block">
-                    <label for="apellido"> Apellido: </label><input type="text" maxlength="30" size="25" name="apellido" value="<%=apellido%>">
+                    <label for="apellido"> Apellidos: </label><input type="text" maxlength="30" size="25" name="apellido" value="<%=apellido%>">
                 </div>
                 <div class="block">
                     <label for="residencia"> Ciudad de residencia: </label><input type="text" maxlength="30" size="25" name="ciudad" value="<%=ciudad%>">

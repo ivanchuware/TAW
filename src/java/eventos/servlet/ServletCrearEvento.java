@@ -5,12 +5,8 @@
  */
 package eventos.servlet;
 
-import eventos.dao.UsuarioFacade;
-import eventos.entity.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.ejb.EJB;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,13 +15,11 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Ivanchu
+ * @author luilo
  */
-@WebServlet(name = "ServletLogin", urlPatterns = {"/ServletLogin"})
-public class ServletLogin extends HttpServlet {
-    
-    @EJB
-    private UsuarioFacade usuarioFacade;
+@WebServlet(name = "ServletCrearEvento", urlPatterns = {"/ServletCrearEvento"})
+public class ServletCrearEvento extends HttpServlet {
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -37,26 +31,19 @@ public class ServletLogin extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            String stremail = request.getParameter("correo");
-            String strpwd = request.getParameter("contrasena");
-            Usuario user = usuarioFacade.findByEmail(stremail);
-            if (user != null && strpwd.equals(user.getPassword()))
-            {
-                if(user.getRol().getIdRol()==1){//Creador de eventos
-                    request.setAttribute("usuario", user);
-                    RequestDispatcher rd = request.getRequestDispatcher("inicioCreador.jsp");
-                    rd.forward(request, response);
-                }else{
-                    request.setAttribute("usuario", user);
-                    RequestDispatcher rd = request.getRequestDispatcher("inicio.jsp");
-                    rd.forward(request, response);
-                }
-            }
-            else 
-            {
-                RequestDispatcher rd = request.getRequestDispatcher("fallologin.jsp");
-                rd.forward(request,response);
-            }
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet ServletCrearEvento</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet ServletCrearEvento at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
