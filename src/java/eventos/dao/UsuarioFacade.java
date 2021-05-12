@@ -14,7 +14,7 @@ import javax.persistence.Query;
 
 /**
  *
- * @author aaron
+ * @author luilo
  */
 @Stateless
 public class UsuarioFacade extends AbstractFacade<Usuario> {
@@ -30,6 +30,7 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
     public UsuarioFacade() {
         super(Usuario.class);
     }
+    
     public Usuario findByEmail (String email) {
         Query q;
         List<Usuario> lista;

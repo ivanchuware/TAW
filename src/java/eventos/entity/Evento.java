@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -29,7 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author aaron
+ * @author luilo
  */
 @Entity
 @Table(name = "EVENTO")
@@ -45,8 +46,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Evento.findByEntradas", query = "SELECT e FROM Evento e WHERE e.entradas = :entradas")
     , @NamedQuery(name = "Evento.findByAsientosfijos", query = "SELECT e FROM Evento e WHERE e.asientosfijos = :asientosfijos")
     , @NamedQuery(name = "Evento.findByNumfilas", query = "SELECT e FROM Evento e WHERE e.numfilas = :numfilas")
-    , @NamedQuery(name = "Evento.findByNumasientosporfila", query = "SELECT e FROM Evento e WHERE e.numasientosporfila = :numasientosporfila")
-    , @NamedQuery(name = "Evento.findByIdCreador", query = "SELECT e FROM Evento e WHERE e.idCreador = :idCreador")})
+    , @NamedQuery(name = "Evento.findByNumasientosporfila", query = "SELECT e FROM Evento e WHERE e.numasientosporfila = :numasientosporfila")})
 public class Evento implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -80,15 +80,14 @@ public class Evento implements Serializable {
     private Integer numfilas;
     @Column(name = "NUMASIENTOSPORFILA")
     private Integer numasientosporfila;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_CREADOR")
-    private int idCreador;
     @JoinTable(name = "USUARIO_INSCRITO", joinColumns = {
         @JoinColumn(name = "ID_EVENTO", referencedColumnName = "ID_EVENTO")}, inverseJoinColumns = {
         @JoinColumn(name = "ID_USUARIO", referencedColumnName = "ID_USUARIO")})
     @ManyToMany
     private List<Usuario> usuarioList;
+    @JoinColumn(name = "ID_CREADOR", referencedColumnName = "ID_USUARIO")
+    @ManyToOne
+    private Usuario idCreador;
 
     public Evento() {
     }
@@ -97,11 +96,10 @@ public class Evento implements Serializable {
         this.idEvento = idEvento;
     }
 
-    public Evento(Integer idEvento, String titulo, Character asientosfijos, int idCreador) {
+    public Evento(Integer idEvento, String titulo, Character asientosfijos) {
         this.idEvento = idEvento;
         this.titulo = titulo;
         this.asientosfijos = asientosfijos;
-        this.idCreador = idCreador;
     }
 
     public Integer getIdEvento() {
@@ -184,14 +182,6 @@ public class Evento implements Serializable {
         this.numasientosporfila = numasientosporfila;
     }
 
-    public int getIdCreador() {
-        return idCreador;
-    }
-
-    public void setIdCreador(int idCreador) {
-        this.idCreador = idCreador;
-    }
-
     @XmlTransient
     public List<Usuario> getUsuarioList() {
         return usuarioList;
@@ -199,6 +189,14 @@ public class Evento implements Serializable {
 
     public void setUsuarioList(List<Usuario> usuarioList) {
         this.usuarioList = usuarioList;
+    }
+
+    public Usuario getIdCreador() {
+        return idCreador;
+    }
+
+    public void setIdCreador(Usuario idCreador) {
+        this.idCreador = idCreador;
     }
 
     @Override

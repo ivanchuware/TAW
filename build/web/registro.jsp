@@ -24,7 +24,7 @@ and open the template in the editor.
             <li><a  href="index.html">Inicio</a></li>
             <li><a href="login.jsp">Identificarse</a></li>
             <li><a class="active" href="registro.jsp">Registro</a></li>
-            <li style="float:right"><a href="about.asp">Sobre nosotros</a></li>
+            <li style="float:right"><a href="about.jsp">Sobre nosotros</a></li>
         </ul>
         <h1>Introduce los datos para crear tu cuenta.</h1>
         <%
@@ -110,8 +110,11 @@ and open the template in the editor.
                 <%
                     }
                 %>
+                <div class="block">
+                    <input type="submit" value="Registrarse">
+                </div>
+                
             </form>
         </div>
     </body>
 </html>
-

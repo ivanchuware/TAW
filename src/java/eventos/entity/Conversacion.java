@@ -6,6 +6,7 @@
 package eventos.entity;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,12 +17,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author aaron
+ * @author luilo
  */
 @Entity
 @Table(name = "CONVERSACION")
@@ -43,6 +46,8 @@ public class Conversacion implements Serializable {
     @JoinColumn(name = "ID_USUARIO1", referencedColumnName = "ID_USUARIO")
     @ManyToOne(optional = false)
     private Usuario idUsuario1;
+    @OneToMany(mappedBy = "idConversacion")
+    private List<Mensaje> mensajeList;
 
     public Conversacion() {
     }
@@ -73,6 +78,15 @@ public class Conversacion implements Serializable {
 
     public void setIdUsuario1(Usuario idUsuario1) {
         this.idUsuario1 = idUsuario1;
+    }
+
+    @XmlTransient
+    public List<Mensaje> getMensajeList() {
+        return mensajeList;
+    }
+
+    public void setMensajeList(List<Mensaje> mensajeList) {
+        this.mensajeList = mensajeList;
     }
 
     @Override

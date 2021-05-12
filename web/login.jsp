@@ -27,7 +27,7 @@
                 <label for="Correo">Correo</label><input type="text" id="Correo" name="correo"><br>
             </div>
             <div class="block">
-                <label for="Contraseña">Contraseña</label><input type="text" id="Contraseña" name="contrasena"><br>
+                <label for="Contraseña">Contraseña</label><input type="password" id="Contraseña" name="contrasena"><br>
             </div>
             <input type="submit" name="Iniciar Sesión">
         </form>
