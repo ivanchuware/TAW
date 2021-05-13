@@ -23,7 +23,7 @@
             if (user.getRol().getIdRol() == 1 || user.getRol().getIdRol()== 3)
             {
         %>
-        <form action="conversaciones.jsp" >
+        <form action="conversacion.jsp" >
             <input type="submit" name="Ver Conversaciones">
         </form>
         <%
