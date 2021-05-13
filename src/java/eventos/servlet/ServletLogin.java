@@ -16,6 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -61,27 +62,17 @@ public class ServletLogin extends HttpServlet {
                     errorMsg = "Inserte Contraseña";
                 }
             }
-            if (user != null && strpwd.equals(user.getPassword()))
-            {
-                if(user.getRol().getIdRol()==1){//Creador de eventos
-                    request.setAttribute("usuario", user);
-                    RequestDispatcher rd = request.getRequestDispatcher("inicioCreador.jsp");
-                    rd.forward(request, response);
-                }else{
-                    request.setAttribute("usuario", user);
-                    RequestDispatcher rd = request.getRequestDispatcher("inicio.jsp");
-                    rd.forward(request, response);
-                }
-            }
         
 
         if (!error && user != null && strpwd.equals(user.getPassword())) {
+            HttpSession session = request.getSession();
+            session.setAttribute("usuario", user);
             if (user.getRol().getIdRol() == 1) {//Creador de eventos
-                request.setAttribute("usuario", user);
+                
                 RequestDispatcher rd = request.getRequestDispatcher("inicioCreador.jsp");
                 rd.forward(request, response);
             } else {
-                request.setAttribute("usuario", user);
+               
                 RequestDispatcher rd = request.getRequestDispatcher("inicio.jsp");
                 rd.forward(request, response);
             }

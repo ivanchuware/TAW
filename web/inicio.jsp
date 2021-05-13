@@ -13,7 +13,8 @@
         <title>Inicio</title>
     </head>
     <%
-      Usuario user = (Usuario)request.getAttribute("usuario");
+      
+      Usuario user = (Usuario)session.getAttribute("usuario");
     %>
     <body>
         <h1>El Usuario es: <%= user.getNombre() + " " + user.getApellidos() %></h1>

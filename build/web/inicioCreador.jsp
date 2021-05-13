@@ -15,7 +15,7 @@
         <link rel="stylesheet" href="css/estiloregistro.css">
     </head>
     <%
-        Usuario usuario = (Usuario) request.getAttribute("usuario");
+        Usuario usuario = (Usuario)session.getAttribute("usuario");
         String nombreCompleto = usuario.getNombre() + " " + usuario.getApellidos();
     %>
     <body>
