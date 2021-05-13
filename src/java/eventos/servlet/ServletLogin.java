@@ -23,9 +23,10 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "ServletLogin", urlPatterns = {"/ServletLogin"})
 public class ServletLogin extends HttpServlet {
-    
+
     @EJB
     private UsuarioFacade usuarioFacade;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -37,6 +38,7 @@ public class ServletLogin extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+<<<<<<< Updated upstream
             String stremail = request.getParameter("correo");
             String strpwd = request.getParameter("contrasena");
             Usuario user = usuarioFacade.findByEmail(stremail);
@@ -52,14 +54,34 @@ public class ServletLogin extends HttpServlet {
                     rd.forward(request, response);
                 }
             }
-            else 
-            {
-                RequestDispatcher rd = request.getRequestDispatcher("fallologin.jsp");
-                rd.forward(request,response);
+        }
+
+        if (!error && user != null && strpwd.equals(user.getPassword())) {
+            if (user.getRol().getIdRol() == 1) {//Creador de eventos
+                request.setAttribute("usuario", user);
+                RequestDispatcher rd = request.getRequestDispatcher("inicioCreador.jsp");
+                rd.forward(request, response);
+            } else {
+                request.setAttribute("usuario", user);
+                RequestDispatcher rd = request.getRequestDispatcher("inicio.jsp");
+                rd.forward(request, response);
             }
+        } else if (!error) {
+            error = true;
+            errorMsg = "Email o Contraseña invalido";
+            request.setAttribute("error", error);
+            request.setAttribute("errorMsg", errorMsg);
+            RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
+            rd.forward(request, response);
+        } else {
+            request.setAttribute("error", error);
+            request.setAttribute("errorMsg", errorMsg);
+            RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
+            rd.forward(request, response);
+        }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
