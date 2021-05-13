@@ -20,20 +20,7 @@
             <li><a href="registro.jsp">Registro</a></li>
             <li style="float:right"><a href="about.asp">Sobre nosotros</a></li>
         </ul>
-<<<<<<< Updated upstream
-    <h1>Introduce los datos para iniciar sesión</h1>
-    <div class="form">
-        <form action="ServletLogin">
-            <div class="block">
-                <label for="Correo">Correo</label><input type="text" id="Correo" name="correo"><br>
-            </div>
-            <div class="block">
-                <label for="Contraseña">Contraseña</label><input type="password" id="Contraseña" name="contrasena"><br>
-            </div>
-            <input type="submit" name="Iniciar Sesión">
-        </form>
-    </div>
-=======
+
         <h1>Introduce los datos para iniciar sesión</h1>
         <%
             String email = (String) request.getAttribute("correo");
@@ -74,6 +61,5 @@
                 <input type="submit" name="Iniciar Sesión">
             </form>
         </div>
->>>>>>> Stashed changes
     </body>
 </html>

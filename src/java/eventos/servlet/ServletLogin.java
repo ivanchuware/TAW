@@ -38,10 +38,29 @@ public class ServletLogin extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-<<<<<<< Updated upstream
+
             String stremail = request.getParameter("correo");
             String strpwd = request.getParameter("contrasena");
             Usuario user = usuarioFacade.findByEmail(stremail);
+            
+            Boolean error = false;
+            String errorMsg = "";
+            
+            if (stremail == null || stremail == "")
+            {
+                error = true;
+                errorMsg = "Inserte Email";
+                
+            }
+            if (strpwd == null || strpwd == "")
+            {
+                if (error){
+                    errorMsg += " y Contraseña";
+                } else {
+                    error = true;
+                    errorMsg = "Inserte Contraseña";
+                }
+            }
             if (user != null && strpwd.equals(user.getPassword()))
             {
                 if(user.getRol().getIdRol()==1){//Creador de eventos
@@ -54,7 +73,7 @@ public class ServletLogin extends HttpServlet {
                     rd.forward(request, response);
                 }
             }
-        }
+        
 
         if (!error && user != null && strpwd.equals(user.getPassword())) {
             if (user.getRol().getIdRol() == 1) {//Creador de eventos
