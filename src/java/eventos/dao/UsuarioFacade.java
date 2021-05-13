@@ -30,6 +30,19 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
     public UsuarioFacade() {
         super(Usuario.class);
     }
+    public Usuario findById (Integer id) {
+        Query q;
+        List<Usuario> lista;
+        
+        q = this.em.createNamedQuery("Usuario.findByIdUsuario");
+        q.setParameter("id_usuario", id);
+        lista = q.getResultList();
+        if (lista != null && lista.isEmpty() == false) {
+            return lista.get(0);
+        } else {
+            return null;
+        }                                
+    }
     
     public Usuario findByEmail (String email) {
         Query q;

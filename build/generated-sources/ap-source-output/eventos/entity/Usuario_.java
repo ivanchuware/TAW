@@ -2,6 +2,7 @@ package eventos.entity;
 
 import eventos.entity.Conversacion;
 import eventos.entity.Evento;
+import eventos.entity.Mensaje;
 import eventos.entity.Roles;
 import java.util.Date;
 import javax.annotation.Generated;
@@ -9,12 +10,13 @@ import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2021-05-13T13:36:36")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2021-05-13T20:29:07")
 @StaticMetamodel(Usuario.class)
 public class Usuario_ { 
 
     public static volatile SingularAttribute<Usuario, String> apellidos;
     public static volatile ListAttribute<Usuario, Conversacion> conversacionList;
+    public static volatile ListAttribute<Usuario, Mensaje> mensajeList;
     public static volatile SingularAttribute<Usuario, Integer> idUsuario;
     public static volatile ListAttribute<Usuario, Evento> eventoList;
     public static volatile ListAttribute<Usuario, Evento> eventoList1;

@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author luilo
+ * @author Ivanchu
  */
 @Entity
 @Table(name = "MENSAJE")
@@ -33,8 +33,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Mensaje.findAll", query = "SELECT m FROM Mensaje m")
     , @NamedQuery(name = "Mensaje.findByIdMensaje", query = "SELECT m FROM Mensaje m WHERE m.idMensaje = :idMensaje")
+    , @NamedQuery(name = "Mensaje.findByHora", query = "SELECT m FROM Mensaje m WHERE m.hora = :hora")
+    , @NamedQuery(name = "Mensaje.findByMinuto", query = "SELECT m FROM Mensaje m WHERE m.minuto = :minuto")
     , @NamedQuery(name = "Mensaje.findByMensaje", query = "SELECT m FROM Mensaje m WHERE m.mensaje = :mensaje")
-    , @NamedQuery(name = "Mensaje.findByHora", query = "SELECT m FROM Mensaje m WHERE m.hora = :hora")})
+    , @NamedQuery(name = "Mensaje.findByFecha", query = "SELECT m FROM Mensaje m WHERE m.fecha = :fecha")})
 public class Mensaje implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -43,15 +45,22 @@ public class Mensaje implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID_MENSAJE")
     private Integer idMensaje;
+    @Column(name = "HORA")
+    private Integer hora;
+    @Column(name = "MINUTO")
+    private Integer minuto;
     @Size(max = 1000)
     @Column(name = "MENSAJE")
     private String mensaje;
-    @Column(name = "HORA")
+    @Column(name = "FECHA")
     @Temporal(TemporalType.DATE)
-    private Date hora;
+    private Date fecha;
     @JoinColumn(name = "ID_CONVERSACION", referencedColumnName = "ID_CONVERSACION")
     @ManyToOne
     private Conversacion idConversacion;
+    @JoinColumn(name = "ID_USUARIO", referencedColumnName = "ID_USUARIO")
+    @ManyToOne(optional = false)
+    private Usuario idUsuario;
 
     public Mensaje() {
     }
@@ -68,6 +77,22 @@ public class Mensaje implements Serializable {
         this.idMensaje = idMensaje;
     }
 
+    public Integer getHora() {
+        return hora;
+    }
+
+    public void setHora(Integer hora) {
+        this.hora = hora;
+    }
+
+    public Integer getMinuto() {
+        return minuto;
+    }
+
+    public void setMinuto(Integer minuto) {
+        this.minuto = minuto;
+    }
+
     public String getMensaje() {
         return mensaje;
     }
@@ -76,12 +101,12 @@ public class Mensaje implements Serializable {
         this.mensaje = mensaje;
     }
 
-    public Date getHora() {
-        return hora;
+    public Date getFecha() {
+        return fecha;
     }
 
-    public void setHora(Date hora) {
-        this.hora = hora;
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
 
     public Conversacion getIdConversacion() {
@@ -90,6 +115,14 @@ public class Mensaje implements Serializable {
 
     public void setIdConversacion(Conversacion idConversacion) {
         this.idConversacion = idConversacion;
+    }
+
+    public Usuario getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Usuario idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     @Override

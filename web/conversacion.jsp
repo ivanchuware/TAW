@@ -1,9 +1,11 @@
 <%-- 
     Document   : conversacion
-    Created on : May 13, 2021, 1:53:52 PM
+    Created on : May 13, 2021, 6:16:33 PM
     Author     : Ivanchu
 --%>
 
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="eventos.entity.Mensaje"%>
 <%@page import="eventos.entity.Conversacion"%>
 <%@page import="eventos.entity.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -11,66 +13,53 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Conversacion</title>
     </head>
     <%
         Usuario user = (Usuario) session.getAttribute("usuario");
-
-    %>
-
-    <table border="1">
-        <thead>
-            <tr>
-
-                <th>Usuario</th>
-                <th>Tipo Usuario</th>
-                <th>Ultimo mensaje</th>
-            </tr>
-        </thead>
-        <tbody>
-            <%        
-                for (Conversacion conversacion : user.getConversacionList1()) {
-                String nombrecompleto = conversacion.getIdUsuario2().getNombre() + " " + conversacion.getIdUsuario2().getApellidos();    
-            %>            
-            <tr>
-                <td><%=nombrecompleto%></td>
-                <td><%=conversacion.getIdUsuario2().getRol().getDescripcion()%></td>
-                <% if (conversacion.getMensajeList().isEmpty()) {
-                %>
-                <td>no hay mensajes</td>
-                <%
-                } else {
-                %>
-                <td><%=conversacion.getMensajeList().get(conversacion.getMensajeList().size() - 1).getMensaje()%></td>
-                <%
-                    }
-                %>
-            </tr>
-            <%
-                }
-                for (Conversacion conversacion : user.getConversacionList()) {
-                String nombrecompleto = conversacion.getIdUsuario1().getNombre() + " " + conversacion.getIdUsuario1().getApellidos();
-            %>            
-            <tr>
-                <td><%=nombrecompleto%></td>
-                <td><%=conversacion.getIdUsuario1().getRol().getDescripcion()%></td>
-                <% if (conversacion.getMensajeList().isEmpty()) {
-                %>
-                <td>no hay mensajes</td>
-                <%
-                } else {
-                %>
-                <td><%=conversacion.getMensajeList().get(conversacion.getMensajeList().size() - 1).getMensaje()%></td>
-                <%
-                    }
-                %>
-            </tr>
-            <%
-                }
-            %>    
-        </tbody>
-    </table>
+        Conversacion conv = (Conversacion) request.getAttribute("conversacion");
+    %>    
     <body>
-        
+        <table width="500">
+            <tbody>
+
+                <%
+                    for (Mensaje m : conv.getMensajeList()) {
+
+                %>
+                <tr>
+                    <%                    String horayminuto = m.getHora() + ":" + m.getMinuto();
+                        if (m.getIdUsuario().getIdUsuario() == user.getIdUsuario()) {
+                    %>
+
+                    <td align ="right"><%=m.getMensaje()%></td>
+
+                    <%
+                    } else {
+
+                    %>
+
+                    <td align ="left"><%=m.getMensaje()%></td>
+
+                    <%
+                        }
+                    %>
+
+                    <td><%= horayminuto%></td>
+                </tr>
+                <%
+                    }
+                %>
+            </tbody>
+        </table>
+        <form action="ServletMensaje">
+            <input type="hidden" name="conver" value="<%= conv.getIdConversacion()%>">
+
+            <input type="text" id="Mensaje" name="msg"> <br>
+            <input type="submit" value="Enviar Mensaje"><br>
+        </form>
+        <form action="conversaciones.jsp" >
+            <input type="submit" value="Ver Conversaciones">
+        </form>
     </body>
 </html>

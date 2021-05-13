@@ -5,7 +5,9 @@
  */
 package eventos.servlet;
 
+import eventos.dao.ConversacionFacade;
 import eventos.dao.UsuarioFacade;
+import eventos.entity.Conversacion;
 import eventos.entity.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -22,11 +24,8 @@ import javax.servlet.http.HttpSession;
  *
  * @author Ivanchu
  */
-@WebServlet(name = "ServletLogin", urlPatterns = {"/ServletLogin"})
-public class ServletLogin extends HttpServlet {
-
-    @EJB
-    private UsuarioFacade usuarioFacade;
+@WebServlet(name = "ServletConversacion", urlPatterns = {"/ServletConversacion"})
+public class ServletConversacion extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,62 +36,35 @@ public class ServletLogin extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    @EJB
+    private ConversacionFacade conversacionFacade;
+    
+    @EJB
+    private UsuarioFacade usuarioFacade;
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-            String stremail = request.getParameter("correo");
-            String strpwd = request.getParameter("contrasena");
-            Usuario user = usuarioFacade.findByEmail(stremail);
-            Usuario user2 = usuarioFacade.find(new Integer (2));
-            
-            Boolean error = false;
-            String errorMsg = "";
-            
-            if (stremail == null || stremail == "")
-            {
-                error = true;
-                errorMsg = "Inserte Email";
-                
-            }
-            if (strpwd == null || strpwd == "")
-            {
-                if (error){
-                    errorMsg += " y Contraseña";
-                } else {
-                    error = true;
-                    errorMsg = "Inserte Contraseña";
-                }
-            }
         
-
-        if (!error && user != null && strpwd.equals(user.getPassword())) {
-            HttpSession session = request.getSession();
-            session.setAttribute("usuario", user);
-            if (user.getRol().getIdRol() == 1) {//Creador de eventos
-                
-                RequestDispatcher rd = request.getRequestDispatcher("inicioCreador.jsp");
-                rd.forward(request, response);
-            } else {
-               
-                RequestDispatcher rd = request.getRequestDispatcher("inicio.jsp");
-                rd.forward(request, response);
-            }
-        } else if (!error) {
-            error = true;
-            errorMsg = "Email o Contraseña invalido";
-            request.setAttribute("error", error);
-            request.setAttribute("errorMsg", errorMsg);
-            RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
+        HttpSession session = request.getSession();
+        Usuario user = (Usuario) session.getAttribute("usuario");
+            String str = request.getParameter("conversacion");
+            
+            
+            
+           
+            Conversacion conversacion;
+            conversacion = this.conversacionFacade.find(new Integer (str));
+            
+            
+            
+            request.setAttribute("conversacion", conversacion);
+            
+            RequestDispatcher rd = request.getRequestDispatcher("conversacion.jsp");
             rd.forward(request, response);
-        } else {
-            request.setAttribute("error", error);
-            request.setAttribute("errorMsg", errorMsg);
-            RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
-            rd.forward(request, response);
-        }
+      
     }
 
-// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
