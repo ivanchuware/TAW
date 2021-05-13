@@ -3,13 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/W:/SubEscritorio/Uma/Tecnologia%20Aplicaciones%20Web/TAW/web/WEB-INF/web.xml</file>
-            <file>file:/W:/SubEscritorio/Uma/Tecnologia%20Aplicaciones%20Web/TAW/src/java/eventos/dao/AbstractFacade.java</file>
-            <file>file:/W:/SubEscritorio/Uma/Tecnologia%20Aplicaciones%20Web/TAW/src/java/eventos/entity/Conversacion.java</file>
-            <file>file:/W:/SubEscritorio/Uma/Tecnologia%20Aplicaciones%20Web/TAW/web/registro.jsp</file>
-            <file>file:/W:/SubEscritorio/Uma/Tecnologia%20Aplicaciones%20Web/TAW/web/index.html</file>
-            <file>file:/W:/SubEscritorio/Uma/Tecnologia%20Aplicaciones%20Web/TAW/web/login.jsp</file>
-            <file>file:/W:/SubEscritorio/Uma/Tecnologia%20Aplicaciones%20Web/TAW/src/java/eventos/servlet/ServletRegistro.java</file>
+            <file>file:/C:/Users/aaron/Documents/GitHub/TAWBueno/web/AdminEditar.jsp</file>
+            <file>file:/C:/Users/aaron/Documents/GitHub/TAWBueno/web/registro.jsp</file>
+            <file>file:/C:/Users/aaron/Documents/GitHub/TAWBueno/web/inicio.jsp</file>
+            <file>file:/C:/Users/aaron/Documents/GitHub/TAWBueno/src/java/eventos/servlet/ServletAdminMostrarUsuarios.java</file>
+            <file>file:/C:/Users/aaron/Documents/GitHub/TAWBueno/src/java/eventos/servlet/ServletAdminGuardarEdicion.java</file>
+            <file>file:/C:/Users/aaron/Documents/GitHub/TAWBueno/src/java/eventos/servlet/ServletRegistro.java</file>
+            <file>file:/C:/Users/aaron/Documents/GitHub/TAWBueno/src/java/eventos/servlet/ServletAdminEditarUsuario.java</file>
         </group>
     </open-files>
 </project-private>
