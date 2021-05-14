@@ -4,6 +4,8 @@
     Author     : Ivanchu
 --%>
 
+<%@page import="java.util.List"%>
+<%@page import="eventos.dao.UsuarioFacade"%>
 <%@page import="eventos.entity.Mensaje"%>
 <%@page import="eventos.entity.Conversacion"%>
 <%@page import="eventos.entity.Usuario"%>
@@ -15,80 +17,97 @@
         <title>Conversaciones</title>
     </head>
     <%
+
         Usuario user = (Usuario) session.getAttribute("usuario");
 
     %>
 
     <table border="1">
         <thead>
-            <tr>
+        <body>
 
-                <th>Usuario</th>
-                <th>Tipo Usuario</th>
-                <th>Ultimo mensaje</th>
-                <th>Escrito Por</th>
-                <th>A las:</th>
-            </tr>
-        </thead>
-        <tbody>
-            <%        
-                for (Conversacion conversacion : user.getConversacionList1()) {
-                String nombrecompleto = conversacion.getIdUsuario2().getNombre() + " " + conversacion.getIdUsuario2().getApellidos();    
-            %>            
-            <tr>
-                <td><a href="ServletConversacion?conversacion=<%=conversacion.getIdConversacion()%>"><%=nombrecompleto%></a></td>
-                <td><%=conversacion.getIdUsuario2().getRol().getDescripcion()%></td>
-                <%
-                    if (conversacion.getMensajeList().isEmpty())
-                    {
-                        
-                %>
-                <td>no hay mensajes</td>
-                <td></td>
-                <td></td>
-                <%
-                } else {
+        <tr>
+
+            <th>Usuario</th>
+            <th>Tipo Usuario</th>
+            <th>Ultimo mensaje</th>
+            <th>Escrito Por</th>
+            <th>A las:</th>
+        </tr>
+    </thead>
+    <tbody>
+        <%                for (Conversacion conversacion : user.getConversacionList1()) {
+                String nombrecompleto = conversacion.getIdUsuario2().getNombre() + " " + conversacion.getIdUsuario2().getApellidos();
+        %>            
+        <tr>
+            <td><a href="ServletConversacion?conversacion=<%=conversacion.getIdConversacion()%>"><%=nombrecompleto%></a></td>
+            <td><%=conversacion.getIdUsuario2().getRol().getDescripcion()%></td>
+            <%
+                if (conversacion.getMensajeList().isEmpty()) {
+
+            %>
+            <td>no hay mensajes</td>
+            <td></td>
+            <td></td>
+            <%                } else {
                 Mensaje ultimomensaje = conversacion.getMensajeList().get(conversacion.getMensajeList().size() - 1);
-                String horayminuto = ultimomensaje.getHora()+":"+ultimomensaje.getMinuto();
-                %>
-                <td><%=ultimomensaje.getMensaje() %></td>
-                <td><%=ultimomensaje.getIdUsuario().getNombre()%></td>
-                <td><%=horayminuto%></td>
-                <%
-                    }
-                %>
-            </tr>
+                String horayminuto = ultimomensaje.getHora() + ":" + ultimomensaje.getMinuto();
+            %>
+            <td><%=ultimomensaje.getMensaje()%></td>
+            <td><%=ultimomensaje.getIdUsuario().getNombre()%></td>
+            <td><%=horayminuto%></td>
             <%
                 }
-                for (Conversacion conversacion : user.getConversacionList()) {
+            %>
+        </tr>
+        <%
+            }
+            for (Conversacion conversacion : user.getConversacionList()) {
                 String nombrecompleto = conversacion.getIdUsuario1().getNombre() + " " + conversacion.getIdUsuario1().getApellidos();
-            %>            
-            <tr>
-                <td><a href="ServletConversacion?conversacion=<%=conversacion.getIdConversacion()%>"><%=nombrecompleto%></a></td>
-                <td><%=conversacion.getIdUsuario1().getRol().getDescripcion()%></td>
-                <% if (conversacion.getMensajeList().isEmpty()) {
-                %>
-                <td>no hay mensajes</td>
-                <td></td>
-                <td></td>
-                <%
-                } else {
+        %>            
+        <tr>
+            <td><a href="ServletConversacion?conversacion=<%=conversacion.getIdConversacion()%>"><%=nombrecompleto%></a></td>
+            <td><%=conversacion.getIdUsuario1().getRol().getDescripcion()%></td>
+            <% if (conversacion.getMensajeList().isEmpty()) {
+            %>
+            <td>no hay mensajes</td>
+            <td></td>
+            <td></td>
+            <%
+            } else {
                 Mensaje ultimomensaje = conversacion.getMensajeList().get(conversacion.getMensajeList().size() - 1);
-                String horayminuto = ultimomensaje.getHora()+":"+ultimomensaje.getMinuto();
-                %>
-                <td><%=ultimomensaje.getMensaje() %></td>
-                <td><%=ultimomensaje.getIdUsuario().getNombre()%></td>
-                <td><%=horayminuto%></td>
-                <%
-                    }
-                %>
-            </tr>
+                String horayminuto = ultimomensaje.getHora() + ":" + ultimomensaje.getMinuto();
+            %>
+            <td><%=ultimomensaje.getMensaje()%></td>
+            <td><%=ultimomensaje.getIdUsuario().getNombre()%></td>
+            <td><%=horayminuto%></td>
             <%
                 }
-            %>    
-        </tbody>
-    </table>
-    <body>
-        
-    </body>
+            %>
+        </tr>
+        <%
+            }
+        %>    
+    </tbody>
+</table>
+<h1>Lista de Teleoperadores</h1>
+<%
+    List<Usuario> listaTeleop = (List<Usuario>) request.getAttribute("listaTeleop");
+    for (Usuario usu : listaTeleop) {
+%>
+<a href="ServletCrearConversacion?id=<%=usu.getIdUsuario()%>"><%=usu.getNombre()%></a>
+<%
+    }
+%>
+
+<%            if (user.getRol().getIdRol() == 4) {
+%>
+<form action="ServletMenuConversaciones">
+    <input type="hidden" value="" name="busqueda">
+    <input type="submit" value="Menu de Conversaciones">
+</form>
+<%
+    }
+%>
+</body>
 </html>

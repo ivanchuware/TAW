@@ -20,10 +20,10 @@
         <h1>El Usuario es: <%= user.getNombre() + " " + user.getApellidos() %></h1>
         
         <%
-            if (user.getRol().getIdRol() == 1 || user.getRol().getIdRol()== 3)
+            if (user.getRol().getIdRol() == 1 || user.getRol().getIdRol()== 3 || user.getRol().getIdRol() == 4)
             {
         %>
-        <form action="conversaciones.jsp" >
+        <form action="ServletConversaciones">
             <input type="submit" value="Ver Conversaciones">
         </form>
         <%

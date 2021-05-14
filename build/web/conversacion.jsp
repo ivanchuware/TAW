@@ -58,7 +58,7 @@
             <input type="text" id="Mensaje" name="msg"> <br>
             <input type="submit" value="Enviar Mensaje"><br>
         </form>
-        <form action="conversaciones.jsp" >
+        <form action="ServletConversaciones" >
             <input type="submit" value="Ver Conversaciones">
         </form>
     </body>
