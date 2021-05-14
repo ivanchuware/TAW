@@ -7,6 +7,7 @@ package eventos.servlet;
 
 import eventos.dao.ConversacionFacade;
 import eventos.dao.MensajeFacade;
+import eventos.dao.UsuarioFacade;
 import eventos.entity.Conversacion;
 import eventos.entity.Mensaje;
 import eventos.entity.Usuario;
@@ -33,10 +34,14 @@ import javax.servlet.http.HttpSession;
 public class ServletMensaje extends HttpServlet {
     
     @EJB
+    private UsuarioFacade usuarioFacade;
+    
+    @EJB
     private MensajeFacade mensajeFacade;
     
     @EJB
     private ConversacionFacade conversacionFacade;
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -69,6 +74,31 @@ public class ServletMensaje extends HttpServlet {
         List<Mensaje> lista = conversacion.getMensajeList();
         lista.add(mensaje);
         conversacion.setMensajeList(lista);
+        Usuario user1 = conversacion.getIdUsuario1();
+        Usuario user2 = conversacion.getIdUsuario2();
+        List<Conversacion> lista1 = user1.getConversacionList();
+        List<Conversacion> lista2 = user2.getConversacionList1();
+        
+        for (int i = 0; i <lista1.size(); i++)
+        {
+            if (conversacion.equals(lista1.get(i)))
+            {
+                lista1.set(i, conversacion);
+            }
+        }
+        
+        for (int j = 0; j <lista2.size(); j++)
+        {
+            if (conversacion.equals(lista2.get(j)))
+            {
+                lista2.set(j, conversacion);
+            }
+        }
+        user1.setConversacionList(lista1);
+        user2.setConversacionList(lista2);
+        
+        usuarioFacade.edit(user1);
+        usuarioFacade.edit(user2);
         conversacionFacade.edit(conversacion);
         
         request.setAttribute("conversacion", conversacion);
