@@ -16,6 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -38,47 +39,41 @@ public class ServletLogin extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-<<<<<<< Updated upstream
+
             String stremail = request.getParameter("correo");
             String strpwd = request.getParameter("contrasena");
             Usuario user = usuarioFacade.findByEmail(stremail);
-            if (user != null && strpwd.equals(user.getPassword()))
+            Usuario user2 = usuarioFacade.find(new Integer (2));
+            
+            Boolean error = false;
+            String errorMsg = "";
+            
+            if (stremail == null || stremail == "")
             {
-                request.setAttribute("usuario", user);
-                RequestDispatcher rd = request.getRequestDispatcher("inicio.jsp");
-                rd.forward(request, response);
-=======
-        String stremail = request.getParameter("correo");
-        String strpwd = request.getParameter("contrasena");
-        Usuario user = usuarioFacade.findByEmail(stremail);
-
-        boolean error = false;
-        String errorMsg = "";
-
-        request.setAttribute("correo", stremail);
-        request.setAttribute("contrasena", strpwd);
-
-        if (stremail.isEmpty() || stremail=="") {
-            error = true;
-            errorMsg = "Introduzca Email";
-        }
-        if (strpwd.isEmpty() || strpwd == "") {
-            if (error == true) {
-                errorMsg += " y Contraseña";
-            } else {
-                errorMsg = "Introduzca Contraseña";
                 error = true;
->>>>>>> Stashed changes
+                errorMsg = "Inserte Email";
+                
             }
-        }
+            if (strpwd == null || strpwd == "")
+            {
+                if (error){
+                    errorMsg += " y Contraseña";
+                } else {
+                    error = true;
+                    errorMsg = "Inserte Contraseña";
+                }
+            }
+        
 
         if (!error && user != null && strpwd.equals(user.getPassword())) {
+            HttpSession session = request.getSession();
+            session.setAttribute("usuario", user);
             if (user.getRol().getIdRol() == 1) {//Creador de eventos
-                request.setAttribute("usuario", user);
+                
                 RequestDispatcher rd = request.getRequestDispatcher("inicioCreador.jsp");
                 rd.forward(request, response);
             } else {
-                request.setAttribute("usuario", user);
+               
                 RequestDispatcher rd = request.getRequestDispatcher("inicio.jsp");
                 rd.forward(request, response);
             }

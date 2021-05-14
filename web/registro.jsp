@@ -24,7 +24,7 @@ and open the template in the editor.
             <li><a  href="index.html">Inicio</a></li>
             <li><a href="login.jsp">Identificarse</a></li>
             <li><a class="active" href="registro.jsp">Registro</a></li>
-            <li style="float:right"><a href="about.asp">Sobre nosotros</a></li>
+            <li style="float:right"><a href="about.jsp">Sobre nosotros</a></li>
         </ul>
         <h1>Introduce los datos para crear tu cuenta.</h1>
         <%
@@ -79,7 +79,7 @@ and open the template in the editor.
                     <label for="nombre">Nombre: </label><input type="text" maxlength="20" size="25" name="nombre" value="<%=nombre%>">
                 </div>
                 <div class="block">
-                    <label for="apellido"> Apellido: </label><input type="text" maxlength="30" size="25" name="apellido" value="<%=apellido%>">
+                    <label for="apellido"> Apellidos: </label><input type="text" maxlength="30" size="25" name="apellido" value="<%=apellido%>">
                 </div>
                 <div class="block">
                     <label for="residencia"> Ciudad de residencia: </label><input type="text" maxlength="30" size="25" name="ciudad" value="<%=ciudad%>">
@@ -110,8 +110,11 @@ and open the template in the editor.
                 <%
                     }
                 %>
+                <div class="block">
+                    <input type="submit" value="Registrarse">
+                </div>
+                
             </form>
         </div>
     </body>
 </html>
-

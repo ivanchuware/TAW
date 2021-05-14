@@ -13,17 +13,18 @@
         <title>Inicio</title>
     </head>
     <%
-      Usuario user = (Usuario)request.getAttribute("usuario");
+      
+      Usuario user = (Usuario)session.getAttribute("usuario");
     %>
     <body>
         <h1>El Usuario es: <%= user.getNombre() + " " + user.getApellidos() %></h1>
         
         <%
-            if (user.getRol().getIdRol() == 1 || user.getRol().getIdRol()== 3)
+            if (user.getRol().getIdRol() == 1 || user.getRol().getIdRol()== 3 || user.getRol().getIdRol() == 4)
             {
         %>
-        <form action="conversaciones.jsp" >
-            <input type="submit" name="Ver Conversaciones">
+        <form action="ServletConversaciones">
+            <input type="submit" value="Ver Conversaciones">
         </form>
         <%
             }
