@@ -5,11 +5,14 @@
  */
 package eventos.servlet;
 
+import eventos.dao.ConversacionFacade;
+import eventos.dao.MensajeFacade;
 import eventos.dao.UsuarioFacade;
+import eventos.entity.Conversacion;
+import eventos.entity.Mensaje;
 import eventos.entity.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
@@ -18,17 +21,22 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Ivanchu
  */
-@WebServlet(name = "ServletConversaciones", urlPatterns = {"/ServletConversaciones"})
-public class ServletConversaciones extends HttpServlet {
+@WebServlet(name = "ServletBorrarConversacion", urlPatterns = {"/ServletBorrarConversacion"})
+public class ServletBorrarConversacion extends HttpServlet {
 
     @EJB
-    private UsuarioFacade usuarioFacade; 
+    private ConversacionFacade conversacionFacade;
+    
+    @EJB
+    private MensajeFacade mensajeFacade;
+    
+    @EJB
+    private UsuarioFacade usuarioFacade;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,25 +48,37 @@ public class ServletConversaciones extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<Usuario> listaUsuarios = usuarioFacade.findAll();
-        List<Usuario> listaTeleop = new ArrayList<Usuario>();
-        for (Usuario u : listaUsuarios)
-        {
-            if (u.getRol().getIdRol()==4)
-            {
-                listaTeleop.add(u);
-            }
-        }
+        
+        String strid = request.getParameter("id");
+        Conversacion c = conversacionFacade.find(new Integer (strid));
+        
+         List<Mensaje> listaMensajes = c.getMensajeList();
+                    for(Mensaje m : listaMensajes){
+                        this.mensajeFacade.remove(m);
+                    }
+                    Usuario user1 = c.getIdUsuario1();
+                    Usuario user2 = c.getIdUsuario2();
+                    
+                    List<Conversacion> list1 = user1.getConversacionList();
+                    List<Conversacion> list2 = user2.getConversacionList1();
+                    
+                    list1.remove(c);
+                    list2.remove(c);
+                    
+                    user1.setConversacionList1(list1);
+                    user2.setConversacionList(list2);
+                    
+                    this.usuarioFacade.edit(user1);
+                    this.usuarioFacade.edit(user2);
+                    
+                    this.conversacionFacade.remove(c);
         
         
-        HttpSession session = request.getSession();
+                    request.setAttribute("busqueda", "");
         
-        Usuario uff = (Usuario)session.getAttribute("usuario");
-        Usuario user = usuarioFacade.find(uff.getIdUsuario());
-        session.setAttribute("usuario", user);
-        request.setAttribute("listaTeleop", listaTeleop);
-        RequestDispatcher rd = request.getRequestDispatcher("conversaciones.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("ServletMenuConversaciones");
         rd.forward(request, response);
+                    
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

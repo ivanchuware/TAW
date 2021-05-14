@@ -37,11 +37,19 @@
     </thead>
     <tbody>
         <%                for (Conversacion conversacion : user.getConversacionList1()) {
-                String nombrecompleto = conversacion.getIdUsuario2().getNombre() + " " + conversacion.getIdUsuario2().getApellidos();
+                Usuario sbeve = new Usuario();
+                if (conversacion.getIdUsuario1().getIdUsuario()==user.getIdUsuario())
+                {
+                    sbeve = conversacion.getIdUsuario2();
+                }
+                else {
+                    sbeve = conversacion.getIdUsuario2();
+                }
+                String nombrecompleto = sbeve.getNombre() + " " + sbeve.getApellidos();
         %>            
         <tr>
             <td><a href="ServletConversacion?conversacion=<%=conversacion.getIdConversacion()%>"><%=nombrecompleto%></a></td>
-            <td><%=conversacion.getIdUsuario2().getRol().getDescripcion()%></td>
+            <td><%=sbeve.getRol().getDescripcion()%></td>
             <%
                 if (conversacion.getMensajeList().isEmpty()) {
 
@@ -63,11 +71,19 @@
         <%
             }
             for (Conversacion conversacion : user.getConversacionList()) {
-                String nombrecompleto = conversacion.getIdUsuario1().getNombre() + " " + conversacion.getIdUsuario1().getApellidos();
+                Usuario sbeve = new Usuario();
+                if (conversacion.getIdUsuario1().getIdUsuario()==user.getIdUsuario())
+                {
+                    sbeve = conversacion.getIdUsuario2();
+                }
+                else {
+                    sbeve = conversacion.getIdUsuario2();
+                }
+                String nombrecompleto = sbeve.getNombre() + " " + sbeve.getApellidos();
         %>            
         <tr>
             <td><a href="ServletConversacion?conversacion=<%=conversacion.getIdConversacion()%>"><%=nombrecompleto%></a></td>
-            <td><%=conversacion.getIdUsuario1().getRol().getDescripcion()%></td>
+            <td><%=sbeve.getRol().getDescripcion()%></td>
             <% if (conversacion.getMensajeList().isEmpty()) {
             %>
             <td>no hay mensajes</td>
@@ -94,10 +110,12 @@
 <%
     List<Usuario> listaTeleop = (List<Usuario>) request.getAttribute("listaTeleop");
     for (Usuario usu : listaTeleop) {
+        if (user.getIdUsuario()!=usu.getIdUsuario())
+        {
 %>
 <a href="ServletCrearConversacion?id=<%=usu.getIdUsuario()%>"><%=usu.getNombre()%></a>
 <%
-    }
+    } }
 %>
 
 <%            if (user.getRol().getIdRol() == 4) {
