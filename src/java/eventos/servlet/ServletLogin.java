@@ -71,19 +71,9 @@ public class ServletLogin extends HttpServlet {
             HttpSession session = request.getSession();
             session.setAttribute("usuario", user);
 
-            if (user.getRol().getIdRol() == 1) {//Creador de eventos
-                
-                RequestDispatcher rd = request.getRequestDispatcher("inicioCreador.jsp");
-                rd.forward(request, response);
-            } else {
-               
-                RequestDispatcher rd = request.getRequestDispatcher("inicio.jsp");
-                rd.forward(request, response);
-            }
-
             session.setAttribute("listaUsuario", lista);
             RequestDispatcher rd = request.getRequestDispatcher("inicio.jsp");
-            rd.forward(request, response);            
+            rd.forward(request, response);                        
 
         } else if (!error) {
             error = true;

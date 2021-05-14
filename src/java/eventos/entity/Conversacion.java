@@ -34,8 +34,6 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Conversacion.findByIdConversacion", query = "SELECT c FROM Conversacion c WHERE c.idConversacion = :idConversacion")})
 public class Conversacion implements Serializable {
 
-    
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -115,6 +113,5 @@ public class Conversacion implements Serializable {
     public String toString() {
         return "eventos.entity.Conversacion[ idConversacion=" + idConversacion + " ]";
     }
-
-  
+    
 }

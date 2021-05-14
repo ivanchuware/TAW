@@ -5,10 +5,13 @@
  */
 package eventos.servlet;
 
+import eventos.dao.EventoFacade;
 import eventos.dao.UsuarioFacade;
+import eventos.entity.Evento;
 import eventos.entity.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
@@ -27,6 +30,9 @@ public class ServletAdminMostrarUsuarios extends HttpServlet {
 
     @EJB
     private UsuarioFacade usuarioFacade; 
+    
+    @EJB
+    private EventoFacade eventoFacade;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -39,8 +45,36 @@ public class ServletAdminMostrarUsuarios extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        String strbusqueda = request.getParameter("busqueda");
+        String strEvento = request.getParameter("busquedaEvento");
         List<Usuario> lista = this.usuarioFacade.findAll();
-        request.setAttribute("lista", lista);
+        List<Usuario> listaFiltrada = new ArrayList<Usuario>();
+        List<Evento> listaEvento = this.eventoFacade.findAll();
+        List<Evento> listaEventoFiltrada = new ArrayList<Evento>();
+        
+        if (strbusqueda!="" && strbusqueda!=null){
+            for(Usuario u : lista){
+                if(u.getNombre().toLowerCase().contains(strbusqueda.toLowerCase()) || u.getApellidos().toLowerCase().contains(strbusqueda.toLowerCase())){
+                    listaFiltrada.add(u);
+                }
+            }
+        } else {
+            listaFiltrada = lista;
+        }
+        
+        if (strEvento!="" && strEvento!=null){
+            for(Evento e : listaEvento){
+                if(e.getTitulo().toLowerCase().contains(strEvento.toLowerCase())){
+                    listaEventoFiltrada.add(e);
+                }
+            }
+        } else {
+            listaEventoFiltrada = listaEvento;
+        }
+        request.setAttribute("busqueda", strbusqueda);
+        request.setAttribute("lista", listaFiltrada);
+        request.setAttribute("busquedaEvento", strEvento);
+        request.setAttribute("listaEvento", listaEventoFiltrada);
         RequestDispatcher rd = request.getRequestDispatcher("AdminListar.jsp");
         rd.forward(request, response);
     }

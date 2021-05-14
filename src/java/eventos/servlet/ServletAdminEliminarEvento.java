@@ -5,12 +5,11 @@
  */
 package eventos.servlet;
 
-import eventos.dao.UsuarioFacade;
-import eventos.entity.Usuario;
+import eventos.dao.EventoFacade;
+import eventos.entity.Evento;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.ejb.EJB;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,14 +18,13 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author luilo
+ * @author aaron
  */
-@WebServlet(name = "ServletCrearEvento", urlPatterns = {"/ServletCrearEvento"})
-public class ServletCrearEvento extends HttpServlet {
+@WebServlet(name = "ServletAdminEliminarEvento", urlPatterns = {"/ServletAdminEliminarEvento"})
+public class ServletAdminEliminarEvento extends HttpServlet {
 
     @EJB
-    private UsuarioFacade usuarioFacade;
-    
+    private EventoFacade eventoFacade;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -38,14 +36,11 @@ public class ServletCrearEvento extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        /*
-        String idusuario = request.getParameter("id");
-        Usuario usuario;
-        usuario = this.usuarioFacade.find(new Integer(idusuario));
-       
-        request.setAttribute("usuario", usuario);*/
-        RequestDispatcher rd = request.getRequestDispatcher("crearEvento.jsp");
-        rd.forward(request, response);
+        response.setContentType("text/html;charset=UTF-8");
+        String str = request.getParameter("idevento");
+        Evento e = this.eventoFacade.find(new Integer(str));
+        this.eventoFacade.remove(e);
+        response.sendRedirect("ServletAdminMostrarUsuarios");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

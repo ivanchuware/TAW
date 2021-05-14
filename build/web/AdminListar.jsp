@@ -18,6 +18,16 @@
         <title>EvnTAW - LIstar</title>
     </head>
     <body>
+        <form action="ServletAdminMostrarUsuarios">
+            <%
+                String b = (String)request.getAttribute("busqueda");
+                List<Usuario> listaFiltrada = (List)request.getAttribute("lista");
+                
+                %>
+                
+            <label for="nombre">Busqueda: </label><input type="text" maxlength="20" size="25" name="busqueda" value="<%=b%>">
+            <input type="submit" value="Buscar">
+        </form>
         <table border="1">
         <thead>
             <th>ID</th>
@@ -28,8 +38,8 @@
             <th>ELIMINAR USUARIO</th>
             </tr>
     <%
-        List<Usuario> lista = (List)request.getAttribute("lista");
-        for(Usuario u : lista){
+        
+        for(Usuario u : listaFiltrada){
             
     %>
               <tr>                  

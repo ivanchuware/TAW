@@ -5,10 +5,15 @@
  */
 package eventos.servlet;
 
+import eventos.dao.ConversacionFacade;
+import eventos.dao.MensajeFacade;
 import eventos.dao.UsuarioFacade;
+import eventos.entity.Conversacion;
+import eventos.entity.Mensaje;
 import eventos.entity.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,6 +30,12 @@ public class ServletAdminEliminarUsuario extends HttpServlet {
 
     @EJB
     private UsuarioFacade usuarioFacade;
+    
+    @EJB
+    private ConversacionFacade conversacionFacade;
+    
+    @EJB
+    private MensajeFacade mensajesFacade;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -39,8 +50,22 @@ public class ServletAdminEliminarUsuario extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String str = request.getParameter("idusuario");
         Usuario u = this.usuarioFacade.find(new Integer(str));
+        List<Conversacion> lista = this.conversacionFacade.findAll();
+        if(lista.size() > 0){
+            for(Conversacion c : lista){
+                if(c.getIdUsuario2().getIdUsuario() == u.getIdUsuario() || c.getIdUsuario1().getIdUsuario() == u.getIdUsuario()){
+                    List<Mensaje> listaMensajes = c.getMensajeList();
+                    for(Mensaje m : listaMensajes){
+                        this.mensajesFacade.remove(m);
+                    }
+                    this.conversacionFacade.remove(c);
+
+                }
+            }
+        }
         this.usuarioFacade.remove(u);
         response.sendRedirect("ServletAdminMostrarUsuarios");
+       
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

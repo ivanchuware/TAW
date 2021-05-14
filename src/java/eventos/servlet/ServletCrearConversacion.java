@@ -11,6 +11,7 @@ import eventos.entity.Conversacion;
 import eventos.entity.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -48,22 +49,60 @@ public class ServletCrearConversacion extends HttpServlet {
         Usuario uses = (Usuario) session.getAttribute("usuario");
             String strid = request.getParameter("id");
             Usuario usid = usuarioFacade.find(new Integer (strid));
+            Boolean encontrado = false;
+            Conversacion found = new Conversacion();
             
+            List<Conversacion> lista = conversacionFacade.findAll();
+            for (Conversacion c : lista)
+            {
+                if ((c.getIdUsuario1().getIdUsuario() == uses.getIdUsuario() 
+                 && c.getIdUsuario2().getIdUsuario() == usid.getIdUsuario())
+                 || (c.getIdUsuario1().getIdUsuario() == usid.getIdUsuario() 
+                 && c.getIdUsuario2().getIdUsuario() == uses.getIdUsuario()))
+                {
+                    encontrado = true;
+                    found = c;
+                    
+                }
+            }
+            if (!encontrado)
+            {
             Conversacion conv = new Conversacion();
             if (uses.getRol().getIdRol()==4)
             {
                 conv.setIdUsuario1(uses);
                 conv.setIdUsuario2(usid);
+                List<Conversacion> list1 = uses.getConversacionList();
+                List<Conversacion> list2 = usid.getConversacionList1();
+                list1.add(conv);
+                list2.add(conv);
+                uses.setConversacionList(list1);
+                usid.setConversacionList1(list2);
             }
             else {
                 conv.setIdUsuario1(usid);
                 conv.setIdUsuario2(uses);
+                List<Conversacion> list1 = usid.getConversacionList();
+                List<Conversacion> list2 = uses.getConversacionList1();
+                list1.add(conv);
+                list2.add(conv);
+                usid.setConversacionList(list1);
+                uses.setConversacionList1(list2);
             }
             conversacionFacade.create(conv);
+            usuarioFacade.edit(uses);
+            usuarioFacade.edit(usid);
             request.setAttribute("conversacion", conv);
             
             RequestDispatcher rd = request.getRequestDispatcher("conversacion.jsp");
             rd.forward(request, response);
+            }
+            else {
+                request.setAttribute("conversacion", found);
+            
+            RequestDispatcher rd = request.getRequestDispatcher("conversacion.jsp");
+            rd.forward(request, response);
+            }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
