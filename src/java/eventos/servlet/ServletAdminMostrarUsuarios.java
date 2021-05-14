@@ -9,6 +9,7 @@ import eventos.dao.UsuarioFacade;
 import eventos.entity.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
@@ -39,8 +40,20 @@ public class ServletAdminMostrarUsuarios extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        String strbusqueda = request.getParameter("busqueda");
         List<Usuario> lista = this.usuarioFacade.findAll();
-        request.setAttribute("lista", lista);
+        List<Usuario> listaFiltrada = new ArrayList<Usuario>();
+        if (strbusqueda!="" && strbusqueda!=null){
+            for(Usuario u : lista){
+                if(u.getNombre().toLowerCase().contains(strbusqueda.toLowerCase()) || u.getApellidos().toLowerCase().contains(strbusqueda.toLowerCase())){
+                    listaFiltrada.add(u);
+                }
+            }
+        } else {
+            listaFiltrada = lista;
+        }
+        request.setAttribute("busqueda", strbusqueda);
+        request.setAttribute("lista", listaFiltrada);
         RequestDispatcher rd = request.getRequestDispatcher("AdminListar.jsp");
         rd.forward(request, response);
     }
