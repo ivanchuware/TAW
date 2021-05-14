@@ -49,9 +49,6 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Usuario.findByEmail", query = "SELECT u FROM Usuario u WHERE u.email = :email")})
 public class Usuario implements Serializable {
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
-    private List<Mensaje> mensajeList;
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -99,6 +96,8 @@ public class Usuario implements Serializable {
     private Roles rol;
     @OneToMany(mappedBy = "idCreador")
     private List<Evento> eventoList1;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
+    private List<Mensaje> mensajeList;
 
     public Usuario() {
     }
@@ -230,6 +229,15 @@ public class Usuario implements Serializable {
         this.eventoList1 = eventoList1;
     }
 
+    @XmlTransient
+    public List<Mensaje> getMensajeList() {
+        return mensajeList;
+    }
+
+    public void setMensajeList(List<Mensaje> mensajeList) {
+        this.mensajeList = mensajeList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -253,15 +261,6 @@ public class Usuario implements Serializable {
     @Override
     public String toString() {
         return "eventos.entity.Usuario[ idUsuario=" + idUsuario + " ]";
-    }
-
-    @XmlTransient
-    public List<Mensaje> getMensajeList() {
-        return mensajeList;
-    }
-
-    public void setMensajeList(List<Mensaje> mensajeList) {
-        this.mensajeList = mensajeList;
     }
     
 }

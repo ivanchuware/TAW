@@ -68,15 +68,8 @@ public class ServletLogin extends HttpServlet {
         if (!error && user != null && strpwd.equals(user.getPassword())) {
             HttpSession session = request.getSession();
             session.setAttribute("usuario", user);
-            if (user.getRol().getIdRol() == 1) {//Creador de eventos
-                
-                RequestDispatcher rd = request.getRequestDispatcher("inicioCreador.jsp");
-                rd.forward(request, response);
-            } else {
-               
-                RequestDispatcher rd = request.getRequestDispatcher("inicio.jsp");
-                rd.forward(request, response);
-            }
+            RequestDispatcher rd = request.getRequestDispatcher("inicio.jsp");
+            rd.forward(request, response);            
         } else if (!error) {
             error = true;
             errorMsg = "Email o Contraseña invalido";

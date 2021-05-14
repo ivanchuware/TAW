@@ -46,7 +46,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Evento.findByEntradas", query = "SELECT e FROM Evento e WHERE e.entradas = :entradas")
     , @NamedQuery(name = "Evento.findByAsientosfijos", query = "SELECT e FROM Evento e WHERE e.asientosfijos = :asientosfijos")
     , @NamedQuery(name = "Evento.findByNumfilas", query = "SELECT e FROM Evento e WHERE e.numfilas = :numfilas")
-    , @NamedQuery(name = "Evento.findByNumasientosporfila", query = "SELECT e FROM Evento e WHERE e.numasientosporfila = :numasientosporfila")})
+    , @NamedQuery(name = "Evento.findByNumasientosporfila", query = "SELECT e FROM Evento e WHERE e.numasientosporfila = :numasientosporfila")
+    , @NamedQuery(name = "Evento.findByDescripcion", query = "SELECT e FROM Evento e WHERE e.descripcion = :descripcion")})
 public class Evento implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -80,6 +81,9 @@ public class Evento implements Serializable {
     private Integer numfilas;
     @Column(name = "NUMASIENTOSPORFILA")
     private Integer numasientosporfila;
+    @Size(max = 1000)
+    @Column(name = "DESCRIPCION")
+    private String descripcion;
     @JoinTable(name = "USUARIO_INSCRITO", joinColumns = {
         @JoinColumn(name = "ID_EVENTO", referencedColumnName = "ID_EVENTO")}, inverseJoinColumns = {
         @JoinColumn(name = "ID_USUARIO", referencedColumnName = "ID_USUARIO")})
@@ -180,6 +184,14 @@ public class Evento implements Serializable {
 
     public void setNumasientosporfila(Integer numasientosporfila) {
         this.numasientosporfila = numasientosporfila;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     @XmlTransient
