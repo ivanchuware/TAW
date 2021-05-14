@@ -9,6 +9,7 @@ import eventos.dao.UsuarioFacade;
 import eventos.entity.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -44,6 +45,7 @@ public class ServletLogin extends HttpServlet {
             String strpwd = request.getParameter("contrasena");
             Usuario user = usuarioFacade.findByEmail(stremail);
             Usuario user2 = usuarioFacade.find(new Integer (2));
+            List<Usuario> lista = usuarioFacade.findAll();
             
             Boolean error = false;
             String errorMsg = "";
@@ -68,6 +70,7 @@ public class ServletLogin extends HttpServlet {
         if (!error && user != null && strpwd.equals(user.getPassword())) {
             HttpSession session = request.getSession();
             session.setAttribute("usuario", user);
+
             if (user.getRol().getIdRol() == 1) {//Creador de eventos
                 
                 RequestDispatcher rd = request.getRequestDispatcher("inicioCreador.jsp");
@@ -77,6 +80,11 @@ public class ServletLogin extends HttpServlet {
                 RequestDispatcher rd = request.getRequestDispatcher("inicio.jsp");
                 rd.forward(request, response);
             }
+
+            session.setAttribute("listaUsuario", lista);
+            RequestDispatcher rd = request.getRequestDispatcher("inicio.jsp");
+            rd.forward(request, response);            
+
         } else if (!error) {
             error = true;
             errorMsg = "Email o Contraseña invalido";

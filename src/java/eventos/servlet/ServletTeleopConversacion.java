@@ -5,12 +5,11 @@
  */
 package eventos.servlet;
 
-import eventos.dao.UsuarioFacade;
+import eventos.dao.ConversacionFacade;
+import eventos.entity.Conversacion;
 import eventos.entity.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -24,11 +23,11 @@ import javax.servlet.http.HttpSession;
  *
  * @author Ivanchu
  */
-@WebServlet(name = "ServletConversaciones", urlPatterns = {"/ServletConversaciones"})
-public class ServletConversaciones extends HttpServlet {
+@WebServlet(name = "ServletTeleopConversacion", urlPatterns = {"/ServletTeleopConversacion"})
+public class ServletTeleopConversacion extends HttpServlet {
 
     @EJB
-    private UsuarioFacade usuarioFacade; 
+    private ConversacionFacade conversacionFacade;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,25 +39,18 @@ public class ServletConversaciones extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<Usuario> listaUsuarios = usuarioFacade.findAll();
-        List<Usuario> listaTeleop = new ArrayList<Usuario>();
-        for (Usuario u : listaUsuarios)
-        {
-            if (u.getRol().getIdRol()==4)
-            {
-                listaTeleop.add(u);
-            }
-        }
-        
-        
-        HttpSession session = request.getSession();
-        
-        Usuario uff = (Usuario)session.getAttribute("usuario");
-        Usuario user = usuarioFacade.find(uff.getIdUsuario());
-        session.setAttribute("usuario", user);
-        request.setAttribute("listaTeleop", listaTeleop);
-        RequestDispatcher rd = request.getRequestDispatcher("conversaciones.jsp");
-        rd.forward(request, response);
+            HttpSession session = request.getSession();
+            Usuario user = (Usuario) session.getAttribute("usuario");
+            String str = request.getParameter("id");
+            
+            
+            Conversacion conversacion;
+            conversacion = this.conversacionFacade.find(new Integer (str));
+         
+            request.setAttribute("conversacion", conversacion);
+            
+            RequestDispatcher rd = request.getRequestDispatcher("teleopConversacion.jsp");
+            rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

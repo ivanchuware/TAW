@@ -4,6 +4,7 @@
     Author     : Ivanchu
 --%>
 
+<%@page import="eventos.entity.Usuario"%>
 <%@page import="eventos.entity.Mensaje"%>
 <%@page import="java.util.List"%>
 <%@page import="eventos.entity.Conversacion"%>
@@ -20,7 +21,7 @@
             <%
                 String b = (String)request.getAttribute("busqueda");
                 List<Conversacion> lista = (List<Conversacion>)request.getAttribute("listacontiene");
-                
+                if (b==null) {b="";}
                 %>
                 
             <label for="nombre">Busqueda: </label><input type="text" maxlength="20" size="25" name="busqueda" value="<%=b%>">
@@ -35,6 +36,7 @@
                 <th>Ultimo mensaje</th>
                 <th>Escrito Por</th>
                 <th>A las:</th>
+                <th>Ver Conversacion</th>
                 <th>Eliminar Conversacion</th>
                 
             </tr>
@@ -67,12 +69,32 @@
             <%
                 }
             %>
-            <td><a href="ServletBorrarConversacion?id=<%=c.getIdConversacion() %>">Eliminar Conversacion</a>
+            <td><a href="ServletTeleopConversacion?id=<%=c.getIdConversacion() %>">Ver Conversacion</a></td>
+            <td><a href="ServletBorrarConversacion?id=<%=c.getIdConversacion() %>">Eliminar Conversacion</a></td>
             </tr>
             <% 
                 }
                 %>
         </table>
+        
+        <form action="ServletConversaciones">
+            <input type="submit" value="volver">
+        </form>
+        <br>
+        
+        <h1>Crear Conversacion con usuario</h1>
+        
+        <% 
+            List<Usuario> listaUsuario = (List<Usuario>)session.getAttribute("listaUsuario");
+            for (Usuario u : listaUsuario)
+            {
+                if (u.getRol().getIdRol() == 1 || u.getRol().getIdRol()== 3)
+                {
+            %>
+            
+            <a href="ServletCrearConversacion?id=<%=u.getIdUsuario()%>"><%=u.getNombre()%> </a>
+            
+            <% } } %>
 
     </body>
 </html>

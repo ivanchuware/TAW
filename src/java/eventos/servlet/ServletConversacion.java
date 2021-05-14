@@ -50,8 +50,6 @@ public class ServletConversacion extends HttpServlet {
             String str = request.getParameter("conversacion");
             
             
-            
-           
             Conversacion conversacion;
             conversacion = this.conversacionFacade.find(new Integer (str));
             
