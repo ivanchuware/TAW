@@ -40,23 +40,29 @@ public class ServletLogin extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+            
+            HttpSession session = request.getSession();
             String stremail = request.getParameter("correo");
             String strpwd = request.getParameter("contrasena");
-            Usuario user = usuarioFacade.findByEmail(stremail);
-            Usuario user2 = usuarioFacade.find(new Integer (2));
+            Usuario user = null;
+            try {
+                user = usuarioFacade.findByEmail(stremail);
+            } catch (Exception e) {
+                System.out.print(e.getMessage());
+            }
+
             List<Usuario> lista = usuarioFacade.findAll();
             
             Boolean error = false;
             String errorMsg = "";
             
-            if (stremail == null || stremail == "")
+            if (stremail == null || stremail.isEmpty())
             {
                 error = true;
                 errorMsg = "Inserte Email";
                 
             }
-            if (strpwd == null || strpwd == "")
+            if (strpwd == null || strpwd.isEmpty())
             {
                 if (error){
                     errorMsg += " y Contraseña";
@@ -66,28 +72,25 @@ public class ServletLogin extends HttpServlet {
                 }
             }
         
-
-        if (!error && user != null && strpwd.equals(user.getPassword())) {
-            HttpSession session = request.getSession();
+        RequestDispatcher rd;
+                
+        if (!error && user != null && user.getPassword().equals(strpwd)) {
             session.setAttribute("usuario", user);
-
             session.setAttribute("listaUsuario", lista);
-            RequestDispatcher rd = request.getRequestDispatcher("inicio.jsp");
-            rd.forward(request, response);                        
-
+            rd = request.getRequestDispatcher("inicio.jsp");                  
         } else if (!error) {
             error = true;
             errorMsg = "Email o Contraseña invalido";
             request.setAttribute("error", error);
             request.setAttribute("errorMsg", errorMsg);
-            RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
-            rd.forward(request, response);
+            rd = request.getRequestDispatcher("login.jsp");
         } else {
             request.setAttribute("error", error);
             request.setAttribute("errorMsg", errorMsg);
-            RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
-            rd.forward(request, response);
+            rd = request.getRequestDispatcher("login.jsp");
         }
+        
+        rd.forward(request, response); 
     }
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

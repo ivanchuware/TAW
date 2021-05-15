@@ -3,21 +3,18 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/W:/SubEscritorio/Uma/Tecnologia%20Aplicaciones%20Web/TAW/src/java/eventos/dao/UsuarioFacade.java</file>
-            <file>file:/W:/SubEscritorio/Uma/Tecnologia%20Aplicaciones%20Web/TAW/src/java/eventos/entity/Conversacion.java</file>
-            <file>file:/W:/SubEscritorio/Uma/Tecnologia%20Aplicaciones%20Web/TAW/src/java/eventos/dao/AbstractFacade.java</file>
-            <file>file:/W:/SubEscritorio/Uma/Tecnologia%20Aplicaciones%20Web/TAW/src/java/eventos/servlet/ServletAdminEditarUsuario.java</file>
-            <file>file:/W:/SubEscritorio/Uma/Tecnologia%20Aplicaciones%20Web/TAW/src/java/eventos/servlet/ServletMensaje.java</file>
-            <file>file:/W:/SubEscritorio/Uma/Tecnologia%20Aplicaciones%20Web/TAW/src/java/eventos/servlet/ServletCrearEvento.java</file>
-            <file>file:/W:/SubEscritorio/Uma/Tecnologia%20Aplicaciones%20Web/TAW/web/conversacion.jsp</file>
-            <file>file:/W:/SubEscritorio/Uma/Tecnologia%20Aplicaciones%20Web/TAW/src/java/eventos/servlet/ServletLogin.java</file>
-            <file>file:/W:/SubEscritorio/Uma/Tecnologia%20Aplicaciones%20Web/TAW/src/java/eventos/entity/Mensaje.java</file>
-            <file>file:/W:/SubEscritorio/Uma/Tecnologia%20Aplicaciones%20Web/TAW/web/conversaciones.jsp</file>
-            <file>file:/W:/SubEscritorio/Uma/Tecnologia%20Aplicaciones%20Web/TAW/src/java/eventos/servlet/ServletConversacion.java</file>
-            <file>file:/W:/SubEscritorio/Uma/Tecnologia%20Aplicaciones%20Web/TAW/web/inicio.jsp</file>
-            <file>file:/W:/SubEscritorio/Uma/Tecnologia%20Aplicaciones%20Web/TAW/src/java/eventos/servlet/ServletAdminMostrarUsuarios.java</file>
-            <file>file:/W:/SubEscritorio/Uma/Tecnologia%20Aplicaciones%20Web/TAW/src/java/eventos/dao/ConversacionFacade.java</file>
-            <file>file:/W:/SubEscritorio/Uma/Tecnologia%20Aplicaciones%20Web/TAW/src/java/eventos/entity/Usuario.java</file>
+            <file>file:/C:/Users/EloyB/Documents/GitHub/TAW/src/java/eventos/dao/MensajeFacade.java</file>
+            <file>file:/C:/Users/EloyB/Documents/GitHub/TAW/src/java/eventos/dao/UsuarioFacade.java</file>
+            <file>file:/C:/Users/EloyB/Documents/GitHub/TAW/src/java/eventos/dao/ConversacionFacade.java</file>
+            <file>file:/C:/Users/EloyB/Documents/GitHub/TAW/nbproject/build-impl.xml</file>
+            <file>file:/C:/Users/EloyB/Documents/GitHub/TAW/src/java/eventos/dao/AbstractFacade.java</file>
+            <file>file:/C:/Users/EloyB/Documents/GitHub/TAW/src/java/eventos/dao/RolesFacade.java</file>
+            <file>file:/C:/Users/EloyB/Documents/GitHub/TAW/web/index.html</file>
+            <file>file:/C:/Users/EloyB/Documents/GitHub/TAW/src/java/eventos/servlet/ServletRegistro.java</file>
+            <file>file:/C:/Users/EloyB/Documents/GitHub/TAW/src/java/eventos/dao/EstudioFacade.java</file>
+            <file>file:/C:/Users/EloyB/Documents/GitHub/TAW/src/java/eventos/dao/EventoFacade.java</file>
+            <file>file:/C:/Users/EloyB/Documents/GitHub/TAW/src/java/eventos/servlet/ServletLogin.java</file>
+            <file>file:/C:/Users/EloyB/Documents/GitHub/TAW/web/registro.jsp</file>
         </group>
     </open-files>
 </project-private>
