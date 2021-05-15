@@ -4,6 +4,8 @@
     Author     : aaron
 --%>
 
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="eventos.entity.Evento"%>
 <%@page import="java.util.List"%>
 <%@page import="eventos.entity.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -15,14 +17,16 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>EvnTAW - LIstar</title>
+        <title>EvenTAW - LIstar</title>
     </head>
     <body>
         <form action="ServletAdminMostrarUsuarios">
             <%
                 String b = (String)request.getAttribute("busqueda");
                 List<Usuario> listaFiltrada = (List)request.getAttribute("lista");
-                
+                if(b == null){
+                    b = "";
+                }
                 %>
                 
             <label for="nombre">Busqueda: </label><input type="text" maxlength="20" size="25" name="busqueda" value="<%=b%>">
@@ -53,6 +57,46 @@
               <% } %>
         </thead>
         </table>
-        <a href="AdminAgregarUsuario.jsp">Añadir usuario
+        <a href="AdminAgregarUsuario.jsp">Añadir usuario</a>
+        <form action="ServletAdminMostrarUsuarios">
+        <%
+                            
+            String bEvento = (String)request.getAttribute("busquedaEvento");
+            List<Evento> listaEventoFiltrada = (List)request.getAttribute("listaEvento");
+            if(bEvento == null){
+                bEvento = "";
+            }
+        %>
+            <label for="nombre">Busqueda: </label><input type="text" maxlength="20" size="25" name="busquedaEvento" value="<%=bEvento%>">
+            <input type="submit" value="Buscar">
+        </form>
+        <table border="1" align="right" >
+        <thead style="vertical-align: top">
+            <th>ID</th>
+            <th>TITULO</th>
+            <th>FECHA</th>
+            <th>COSTE</th>
+            <th>AFORO</th>
+            <th>DESCRIPCION</th>
+            <th>EDITAR</th>
+            <th>ELIMINAR</th>
+            </tr>
+        <%
+            for(Evento e : listaEventoFiltrada){
+                
+        %>
+              <tr>                  
+              <td><%= e.getIdEvento()  %></td>                  
+              <td><%= e.getTitulo()  %></td>
+              <td><%= new SimpleDateFormat("dd/MM/yyyy").format(e.getFecha()) %></td>
+              <td><%= e.getCoste() %></td> 
+              <td><%= e.getAforo() %></td> 
+              <td><%= e.getDescripcion() %></td> 
+              <td><a href="ServletAdminEditarEvento?idevento=<%= e.getIdEvento() %>" >Editar</td>
+              <td><a href="ServletAdminEliminarEvento?idevento=<%= e.getIdEvento() %>" >Eliminar</td>
+              </tr>
+              <% } %>            
+              </thead>
+        </table>
     </body>
 </html>

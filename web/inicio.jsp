@@ -4,6 +4,9 @@
     Author     : Ivanchu
 --%>
 
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="eventos.entity.Evento"%>
+<%@page import="java.util.List"%>
 <%@page import="eventos.entity.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -16,8 +19,9 @@
     </head>
     <%
       
-      Usuario user = (Usuario)session.getAttribute("usuario");
+      Usuario user = (Usuario)session.getAttribute("usuario");      
       String nombreCompleto = user.getNombre() + " " + user.getApellidos();
+      List<Evento> listaEventos = (List)session.getAttribute("listaEventos");
     %>
     <body>
         <ul>
@@ -42,8 +46,45 @@
         %>
         <div>Estos son tus eventos creados:</div><br/>
         <form action="ServletCrearEvento">
-            <input type="submit" value="Añadir nuevo" />
+            <input type="submit" value="Añadir nuevo" /><br/>
         </form>
+        <table border="1">
+            <tr>
+                <th>ID</th>
+                <th>TÍTULO</th>
+                <th>DESCRIPCIÓN</th>
+                <th>FECHA</th>
+                <th>FECHA LÍMITE DE RESERVA</th>
+                <th>PRECIO</th>
+                <th>AFORO</th>
+                <th>ENTRADAS POR USUSARIO</th>
+                <th>ASIENTOS FIJOS ASIGNADOS</th>
+                <th>NÚMERO DE FILAS</th>
+                <th>ASIENTOS POR FILA</th>
+            </tr>
+            <%
+              for(Evento evento: listaEventos){
+            %>
+            <tr>
+                <td><%=evento.getIdEvento() %> </td>
+                <td><%=evento.getTitulo() %> </td>
+                <td><%=evento.getDescripcion() %> </td>                
+                <td><%=new SimpleDateFormat("dd/MM/yyyy").format(evento.getFecha()) %> </td>
+                <td><%=new SimpleDateFormat("dd/MM/yyyy").format(evento.getFechares()) %></td>
+                <td><%=evento.getCoste() %> </td>
+                <td><%=evento.getAforo() %> </td>
+                <td><%=evento.getEntradas() %> </td>
+                <td><%=evento.getAsientosfijos() %> </td>
+                <td><%=evento.getNumfilas() %> </td>
+                <td><%=evento.getNumasientosporfila() %> </td>
+                <td><a href="ServletEditarEvento?id=<%=evento.getIdEvento() %>">Editar</a></td>
+                <td><a href="ServletBorrarEvento?id=<%=evento.getIdEvento() %>">Borrar</a></td>
+            </tr>
+            <%
+               }
+                %>
+        </table>
+        <br/>
         <%
             }
         %>
