@@ -118,7 +118,7 @@
     } }
 %>
 
-<%            if (user.getRol().getIdRol() == 4) {
+<%            if (user.getRol().getIdRol() == 4 || user.getRol().getIdRol() == 2) {
 %>
 <form action="ServletMenuConversaciones">
     <input type="hidden" value="" name="busqueda">

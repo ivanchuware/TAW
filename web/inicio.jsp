@@ -28,6 +28,7 @@
             <li><a href="registro.jsp">Registro</a></li>
             <% } %>
             <% if (user != null) { %>
+            <li><a href="menuConversaciones.jsp">Ticket de ayuda</a></li>
             <li style="float:right"><a href="about.asp">Mi cuenta</a></li>
             <% } %>
         </ul>
@@ -41,62 +42,9 @@
                 List<Evento> listaEventos = (List)session.getAttribute("listaEventos");
         %>
         <h1>¡Bienvenido, <%=nombreCompleto%>!</h1><br/>
-        
-        <%
-            if (user.getRol().getIdRol() == 1 || user.getRol().getIdRol()== 3 || user.getRol().getIdRol() == 4)
-            {
-        %>
-        <form action="ServletConversaciones">
-            <input type="submit" value="Ver Conversaciones">
-        </form>
-        <img src="https://steamuserimages-a.akamaihd.net/ugc/920291347197530171/8E5D94D48CA95EE8CA49BB6752E3C1441802BA3E/">
         <%
             }
-            if (user.getRol().getIdRol() == 1){
         %>
-        <div>Estos son tus eventos creados:</div><br/>
-        <form action="ServletCrearEvento">
-            <input type="submit" value="Añadir nuevo" /><br/>
-        </form>
-        <table border="1">
-            <tr>
-                <th>ID</th>
-                <th>TÍTULO</th>
-                <th>DESCRIPCIÓN</th>
-                <th>FECHA</th>
-                <th>FECHA LÍMITE DE RESERVA</th>
-                <th>PRECIO</th>
-                <th>AFORO</th>
-                <th>ENTRADAS POR USUSARIO</th>
-                <th>ASIENTOS FIJOS ASIGNADOS</th>
-                <th>NÚMERO DE FILAS</th>
-                <th>ASIENTOS POR FILA</th>
-            </tr>
-            <%
-              for(Evento evento: listaEventos){
-            %>
-            <tr>
-                <td><%=evento.getIdEvento() %> </td>
-                <td><%=evento.getTitulo() %> </td>
-                <td><%=evento.getDescripcion() %> </td>                
-                <td><%=new SimpleDateFormat("dd/MM/yyyy").format(evento.getFecha()) %> </td>
-                <td><%=new SimpleDateFormat("dd/MM/yyyy").format(evento.getFechares()) %></td>
-                <td><%=evento.getCoste() %> </td>
-                <td><%=evento.getAforo() %> </td>
-                <td><%=evento.getEntradas() %> </td>
-                <td><%=evento.getAsientosfijos() %> </td>
-                <td><%=evento.getNumfilas() %> </td>
-                <td><%=evento.getNumasientosporfila() %> </td>
-                <td><a href="ServletEditarEvento?id=<%=evento.getIdEvento() %>">Editar</a></td>
-                <td><a href="ServletBorrarEvento?id=<%=evento.getIdEvento() %>">Borrar</a></td>
-            </tr>
-            <%
-               }
-                %>
-        </table>
-        <br/>
-        <%
-            }}
-        %>
+
     </body>
 </html>
