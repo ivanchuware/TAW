@@ -13,6 +13,7 @@ import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -51,12 +52,12 @@ public class ServletGuardarEvento extends HttpServlet {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String titulo=request.getParameter("titulo");  
         String descripcion=request.getParameter("descripcion");  
-        String strFechaEvento=request.getParameter("ciudad");  
-        String strFechaReserva=request.getParameter("domicilio");  
+        String strFechaEvento=request.getParameter("fecha"); 
+        String strFechaReserva=request.getParameter("fechaReserva");  
         String precio=request.getParameter("precio");  
         String aforo=request.getParameter("aforo");
         String limiteEntradas=request.getParameter("limiteEntradas");  
-        String asientosFijos=request.getParameter("asientosFijos");  
+        String asientosFijos=request.getParameter("asientosFijos"); 
         String numFilas=request.getParameter("numFilas");  
         String asientosFila=request.getParameter("asientosFila");        
         boolean error = false;
@@ -92,7 +93,7 @@ public class ServletGuardarEvento extends HttpServlet {
             error = true;
             errorMsg += " Límite de entradas vacío";
         }
-        /*
+        
         if(asientosFijos != null){ //Evento de asientos fijos asignados
             if(numFilas.isEmpty()){
                 error = true;
@@ -102,7 +103,7 @@ public class ServletGuardarEvento extends HttpServlet {
                 error = true;
                 errorMsg += " Número de asientos por fila vacío";
             }
-        }*/
+        }
         
         if(!error){
             Evento evento = new Evento();
@@ -114,16 +115,21 @@ public class ServletGuardarEvento extends HttpServlet {
             evento.setAforo(Integer.parseInt(aforo));
             evento.setEntradas(Integer.parseInt(limiteEntradas));
             char fijos;
-            if(asientosFijos.equals("asientosFijos")){//Evento de asientos fijos
+            if(asientosFijos==null){
+                fijos = 'N';
+            }else{
                 fijos = 'S';
                 evento.setNumfilas(Integer.parseInt(numFilas));
                 evento.setNumasientosporfila(Integer.parseInt(asientosFila));
-            }else{
-                fijos = 'N';
             }
             evento.setAsientosfijos(fijos);
             evento.setIdCreador(usuario);
-            this.eventoFacade.create(evento);
+            eventoFacade.create(evento);
+            List<Evento> listaEventos;
+            listaEventos = this.eventoFacade.findByIdCreador(usuario);
+            session.setAttribute("listaEventos", listaEventos);
+            
+            response.sendRedirect("inicio.jsp");
         }else{
             request.setAttribute("error", error);
             request.setAttribute("errorMsg", errorMsg);

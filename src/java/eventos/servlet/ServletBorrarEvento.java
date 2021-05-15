@@ -5,28 +5,30 @@
  */
 package eventos.servlet;
 
-import eventos.dao.UsuarioFacade;
+import eventos.dao.EventoFacade;
+import eventos.entity.Evento;
 import eventos.entity.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.ejb.EJB;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author luilo
  */
-@WebServlet(name = "ServletCrearEvento", urlPatterns = {"/ServletCrearEvento"})
-public class ServletCrearEvento extends HttpServlet {
+@WebServlet(name = "ServletBorrarEvento", urlPatterns = {"/ServletBorrarEvento"})
+public class ServletBorrarEvento extends HttpServlet {
 
     @EJB
-    private UsuarioFacade usuarioFacade;
-    
+    private EventoFacade eventoFacade;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -38,14 +40,17 @@ public class ServletCrearEvento extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        /*
-        String idusuario = request.getParameter("id");
-        Usuario usuario;
-        usuario = this.usuarioFacade.find(new Integer(idusuario));
-       
-        request.setAttribute("usuario", usuario);*/
-        RequestDispatcher rd = request.getRequestDispatcher("crearEvento.jsp");
-        rd.forward(request, response);
+        String strId = request.getParameter("id");
+        Evento elevento = this.eventoFacade.find(new Integer(strId));
+        this.eventoFacade.remove(elevento);
+        
+        HttpSession session = request.getSession(false);
+        Usuario usuario = (Usuario)session.getAttribute("usuario");
+        List<Evento> listaEventos;
+        listaEventos = this.eventoFacade.findByIdCreador(usuario);
+        session.setAttribute("listaEventos", listaEventos);
+        
+        response.sendRedirect("inicio.jsp");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

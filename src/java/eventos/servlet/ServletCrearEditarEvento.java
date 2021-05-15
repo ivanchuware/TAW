@@ -11,7 +11,6 @@ import eventos.entity.Evento;
 import eventos.entity.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -19,21 +18,20 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Ivanchu
+ * @author luilo
  */
-@WebServlet(name = "ServletLogin", urlPatterns = {"/ServletLogin"})
-public class ServletLogin extends HttpServlet {
+@WebServlet(name = "ServletCrearEditarEvento", urlPatterns = {"/ServletCrearEvento","/ServletEditarEvento"})
+public class ServletCrearEditarEvento extends HttpServlet {
 
     @EJB
     private EventoFacade eventoFacade;
 
     @EJB
     private UsuarioFacade usuarioFacade;
-
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -45,61 +43,23 @@ public class ServletLogin extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-            String stremail = request.getParameter("correo");
-            String strpwd = request.getParameter("contrasena");
-            Usuario user = usuarioFacade.findByEmail(stremail);
-            Usuario user2 = usuarioFacade.find(new Integer (2));
-            List<Usuario> lista = usuarioFacade.findAll();
-            
-            Boolean error = false;
-            String errorMsg = "";
-            
-            if (stremail == null || stremail == "")
-            {
-                error = true;
-                errorMsg = "Inserte Email";
-                
-            }
-            if (strpwd == null || strpwd == "")
-            {
-                if (error){
-                    errorMsg += " y Contraseña";
-                } else {
-                    error = true;
-                    errorMsg = "Inserte Contraseña";
-                }
-            }
-        
-
-        if (!error && user != null && strpwd.equals(user.getPassword())) {
-            HttpSession session = request.getSession();
-            session.setAttribute("usuario", user);
-            if(user.getRol().getIdRol()==1){//Creador de eventos
-                List<Evento> listaEventos;
-                listaEventos = this.eventoFacade.findByIdCreador(user);
-                session.setAttribute("listaEventos", listaEventos);
-            }
-            session.setAttribute("listaUsuario", lista);
-            RequestDispatcher rd = request.getRequestDispatcher("inicio.jsp");
-            rd.forward(request, response);                        
-
-        } else if (!error) {
-            error = true;
-            errorMsg = "Email o Contraseña invalido";
-            request.setAttribute("error", error);
-            request.setAttribute("errorMsg", errorMsg);
-            RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
-            rd.forward(request, response);
-        } else {
-            request.setAttribute("error", error);
-            request.setAttribute("errorMsg", errorMsg);
-            RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
-            rd.forward(request, response);
+        /*
+        String idusuario = request.getParameter("id");
+        Usuario usuario;
+        usuario = this.usuarioFacade.find(new Integer(idusuario));
+       
+        request.setAttribute("usuario", usuario);*/
+        String strId = request.getParameter("id");
+        Evento evento=null;
+        if(strId!=null){//Editar evento
+            evento = this.eventoFacade.find(new Integer(strId));
         }
+        request.setAttribute("evento", evento);
+        RequestDispatcher rd = request.getRequestDispatcher("crearEditarEvento.jsp");
+        rd.forward(request, response);
     }
 
-// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
