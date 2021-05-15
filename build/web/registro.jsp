@@ -4,6 +4,7 @@
     Author     : EloyB
 --%>
 
+<%@page import="eventos.entity.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <!--
@@ -19,12 +20,19 @@ and open the template in the editor.
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
+    <%
+        Usuario user = (Usuario)session.getAttribute("usuario");
+        if (user != null) {
+    %>
+    <jsp:forward page="inicio.jsp"/>
+    <%
+        }
+    %>
     <body>
         <ul>
-            <li><a  href="index.html">Inicio</a></li>
+            <li><a  href="inicio.jsp">Inicio</a></li>
             <li><a href="login.jsp">Identificarse</a></li>
             <li><a class="active" href="registro.jsp">Registro</a></li>
-            <li style="float:right"><a href="about.jsp">Sobre nosotros</a></li>
         </ul>
         <h1>Introduce los datos para crear tu cuenta.</h1>
         <%

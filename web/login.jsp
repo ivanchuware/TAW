@@ -4,6 +4,7 @@
     Author     : Ivanchu
 --%>
 
+<%@page import="eventos.entity.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -14,11 +15,18 @@
         <link rel="stylesheet" href="css/estiloregistro.css">
     </head>
     <body>
+    <%
+        Usuario user = (Usuario)session.getAttribute("usuario");
+        if (user != null) {
+    %>
+    <jsp:forward page="inicio.jsp"/>
+    <%
+        }
+    %>
         <ul>
-            <li><a  href="index.html">Inicio</a></li>
+            <li><a  href="inicio.jsp">Inicio</a></li>
             <li><a class="active" href="login.jsp">Identificarse</a></li>
             <li><a href="registro.jsp">Registro</a></li>
-            <li style="float:right"><a href="about.asp">Sobre nosotros</a></li>
         </ul>
 
         <h1>Introduce los datos para iniciar sesión</h1>
