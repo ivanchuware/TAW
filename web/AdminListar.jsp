@@ -67,10 +67,12 @@
                 bEvento = "";
             }
         %>
+        <pre></pre>
             <label for="nombre">Busqueda: </label><input type="text" maxlength="20" size="25" name="busquedaEvento" value="<%=bEvento%>">
             <input type="submit" value="Buscar">
         </form>
-        <table border="1" align="right" >
+            <pre></pre>
+        <table border="1"  >
         <thead style="vertical-align: top">
             <th>ID</th>
             <th>TITULO</th>
@@ -98,5 +100,6 @@
               <% } %>            
               </thead>
         </table>
+        <a href="AdminAgregarEvento.jsp">Añadir evento</a>
     </body>
 </html>
