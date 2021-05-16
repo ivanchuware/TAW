@@ -47,9 +47,12 @@ public class ServletGuardarEvento extends HttpServlet {
         HttpSession session = request.getSession(false);
         Usuario usuario = (Usuario)session.getAttribute("usuario");
         
+        Date fechaActual = new Date();
         Date fechaEvento = new Date();
         Date fechaReserva = new Date();
+        
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String id = request.getParameter("id");
         String titulo=request.getParameter("titulo");  
         String descripcion=request.getParameter("descripcion");  
         String strFechaEvento=request.getParameter("fecha"); 
@@ -73,11 +76,26 @@ public class ServletGuardarEvento extends HttpServlet {
         }
         try {
             fechaEvento = df.parse(strFechaEvento);
+            if(fechaEvento.before(fechaActual)){
+                error = true;
+                errorMsg += "La fecha del evento indicada es anterior a la fecha actual";
+            }
         } catch (Exception e) {
             error = true;
         }
+        
         try{
             fechaReserva = df.parse(strFechaReserva);
+            if(fechaReserva.before(fechaActual)){
+                error = true;
+                errorMsg += "La fecha de reserva del evento indicada es anterior a la fecha actual";
+            }else{
+                if(fechaEvento.before(fechaReserva)){
+                    error = true;
+                    errorMsg += "La fecha del evento indicada es anterior a la fecha límite de reserva";
+                }
+            }
+            
         } catch (Exception e) {
             error = true;
         }
@@ -106,7 +124,12 @@ public class ServletGuardarEvento extends HttpServlet {
         }
         
         if(!error){
-            Evento evento = new Evento();
+            Evento evento;
+            if (id == null) { // Crear nuevo evento
+                evento = new Evento();            
+            } else { // Editar evento existente
+                evento = this.eventoFacade.find(new Integer(id));
+            }
             evento.setTitulo(titulo);
             evento.setDescripcion(descripcion);
             evento.setFecha(fechaEvento);
@@ -117,14 +140,20 @@ public class ServletGuardarEvento extends HttpServlet {
             char fijos;
             if(asientosFijos==null){
                 fijos = 'N';
+                evento.setNumfilas(null);
+                evento.setNumasientosporfila(null);
             }else{
                 fijos = 'S';
                 evento.setNumfilas(Integer.parseInt(numFilas));
                 evento.setNumasientosporfila(Integer.parseInt(asientosFila));
             }
             evento.setAsientosfijos(fijos);
-            evento.setIdCreador(usuario);
-            eventoFacade.create(evento);
+            if (id == null) { // Crear nuevo evento
+                evento.setIdCreador(usuario);    
+                this.eventoFacade.create(evento);
+            } else { // Editar evento existente
+                this.eventoFacade.edit(evento);
+            }
             List<Evento> listaEventos;
             listaEventos = this.eventoFacade.findByIdCreador(usuario);
             session.setAttribute("listaEventos", listaEventos);

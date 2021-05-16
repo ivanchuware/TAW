@@ -5,7 +5,9 @@
  */
 package eventos.servlet;
 
+import eventos.dao.EventoFacade;
 import eventos.dao.UsuarioFacade;
+import eventos.entity.Evento;
 import eventos.entity.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -25,6 +27,9 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "ServletLogin", urlPatterns = {"/ServletLogin"})
 public class ServletLogin extends HttpServlet {
+
+    @EJB
+    private EventoFacade eventoFacade;
 
     @EJB
     private UsuarioFacade usuarioFacade;
@@ -76,8 +81,12 @@ public class ServletLogin extends HttpServlet {
                 
         if (!error && user != null && user.getPassword().equals(strpwd)) {
             session.setAttribute("usuario", user);
-            session.setAttribute("listaUsuario", lista);
-            rd = request.getRequestDispatcher("inicio.jsp");                  
+            session.setAttribute("listaUsuario", lista);                  
+            if(user.getRol().getIdRol()==1){//Creador de eventos
+                List<Evento> listaEventos = this.eventoFacade.findByIdCreador(user);
+                session.setAttribute("listaEventos", listaEventos);
+            }
+            rd = request.getRequestDispatcher("inicio.jsp");  
         } else if (!error) {
             error = true;
             errorMsg = "Email o Contraseña invalido";
