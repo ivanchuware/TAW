@@ -92,7 +92,12 @@
         </table>
         <%
                 }
-            }
+            if(user.getRol().getIdRol() == 2){
             %>
+        <a href="ServletAdminMostrarUsuarios" style="margin:20px auto; text-align:center; display:block; width:120px;" class="button large hpbottom">Pagina de Admin</a>
+        <%
+            }
+        }
+        %>
     </body>
 </html>
