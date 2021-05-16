@@ -125,7 +125,7 @@ public class ServletGuardarEvento extends HttpServlet {
         
         if(!error){
             Evento evento;
-            if (id == null) { // Crear nuevo evento
+            if (id == null || id.length()<=0) { // Crear nuevo evento
                 evento = new Evento();            
             } else { // Editar evento existente
                 evento = this.eventoFacade.find(new Integer(id));
@@ -148,7 +148,7 @@ public class ServletGuardarEvento extends HttpServlet {
                 evento.setNumasientosporfila(Integer.parseInt(asientosFila));
             }
             evento.setAsientosfijos(fijos);
-            if (id == null) { // Crear nuevo evento
+            if (id == null  || id.length()<=0) { // Crear nuevo evento
                 evento.setIdCreador(usuario);    
                 this.eventoFacade.create(evento);
             } else { // Editar evento existente
@@ -158,7 +158,9 @@ public class ServletGuardarEvento extends HttpServlet {
             listaEventos = this.eventoFacade.findByIdCreador(usuario);
             session.setAttribute("listaEventos", listaEventos);
             
-            response.sendRedirect("inicio.jsp");
+            //response.sendRedirect("inicio.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("inicio.jsp");
+            rd.forward(request, response);
         }else{
             request.setAttribute("error", error);
             request.setAttribute("errorMsg", errorMsg);

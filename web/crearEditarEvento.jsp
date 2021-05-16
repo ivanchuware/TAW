@@ -61,12 +61,6 @@
         }
 %>
     <body>
-        <ul>
-            <li><a class="active" href="index.html">Inicio</a></li>
-            <li><a href="login.jsp">Identificarse</a></li>
-            <li><a href="registro.jsp">Registro</a></li>
-            <li style="float:right"><a href="about.asp">Sobre nosotros</a></li>
-        </ul>
         <h1>Rellene los siguientes campos para crear un evento:</h1>
         <form method="get" action="ServletGuardarEvento" accept-charset="UTF-8">
                 <input type="hidden" name="id" value="<%= strId %>" />

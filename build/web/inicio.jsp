@@ -29,7 +29,7 @@
             <% } %>
             <% if (user != null) { %>
             <li><a href="menuConversaciones.jsp">Ticket de ayuda</a></li>
-            <li style="float:right"><a href="about.asp">Mi cuenta</a></li>
+            <!--<li style="float:right"><a href="about.asp">Mi cuenta</a></li>-->
             <% } %>
         </ul>
         <%
@@ -50,6 +50,40 @@
         <h2>Estos son tus eventos creados: </h2>
         <form action="ServletCrearEvento">
             <input type="submit" value="Añadir nuevo" />
+        </form><br/>
+        <h3>Filtro de búsqueda</h3>
+        <%
+            Boolean error = (Boolean) request.getAttribute("error");
+            String filtroTitulo = (String) request.getAttribute("filtroTitulo");
+            String filtroDescripcion = (String) request.getAttribute("filtroDescripcion");
+            String filtroPrecioMin  = (String) request.getAttribute("filtroPrecioMin");
+            String filtroPrecioMax = (String) request.getAttribute("filtroPrecioMax");
+            String strfiltroTitulo = "", strfiltroDescripcion="", strfiltroPrecioMin="", strfiltroPrecioMax="";
+            if(filtroTitulo!=null){
+                strfiltroTitulo = filtroTitulo;
+            }
+            if(filtroDescripcion!=null){
+                strfiltroDescripcion = filtroDescripcion;
+            }
+            if(filtroPrecioMin!=null){
+                strfiltroPrecioMin = filtroPrecioMin;
+            }
+            if(filtroPrecioMax!=null){
+                strfiltroPrecioMax = filtroPrecioMax;
+            }
+                    if (error!=null) {
+                %>
+                <div class="block">Error aplicando el filtro</div>
+                <%
+                    }
+                %>
+        <form action="ServletFiltroEventos">
+            Título <input type="text" name="filtroTitulo" value="<%=strfiltroTitulo%>" />
+            Descripción: <input type="text" name="filtroDescripcion" value="<%=strfiltroDescripcion%>"/>
+            Precio min.: <input type="text" name="filtroPrecioMin" value="<%=strfiltroPrecioMin%>"/>
+            Precio max.: <input type="text" name="filtroPrecioMax" value="<%=strfiltroPrecioMax%>"/>
+            <input type="submit" value="Filtrar" />
+            <a href="ServletFiltroEventos?des=1">Deshacer filtro</a>
         </form>
         <table border="1">
             <tr>
@@ -92,7 +126,12 @@
         </table>
         <%
                 }
-            }
+            if(user.getRol().getIdRol() == 2){
             %>
+        <a href="ServletAdminMostrarUsuarios" style="margin:20px auto; text-align:center; display:block; width:120px;" class="button large hpbottom">Pagina de Admin</a>
+        <%
+            }
+        }
+        %>
     </body>
 </html>
