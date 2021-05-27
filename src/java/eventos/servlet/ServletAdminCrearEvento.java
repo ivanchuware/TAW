@@ -16,6 +16,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.ejb.EJB;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -57,35 +58,116 @@ public class ServletAdminCrearEvento extends HttpServlet {
         String asifil = request.getParameter("asifil");
         String idcre = request.getParameter("idcre");
         String desc = request.getParameter("desc");
-        Usuario u = this.usuarioFacade.find(new Integer(idcre));
-        Evento evento = new Evento();
+        boolean error = false;
+        String errorMsg = "";
+        int aux = 0;
+        int aux2 = 0;
+         if(titulo.isEmpty()){
+            error = true;
+            errorMsg += "Titulo no especificado ";
+        }       
+        if(fe.isEmpty()){
+            error = true;
+            errorMsg += "Fecha de evento no especificada ";
+        }
+        
+        if(feReq.isEmpty()){
+            error = true;
+            errorMsg += "Fecha limite de venta de entradas no especificada ";
+        }
+        
+        if(coste.isEmpty()){
+            error = true;
+            errorMsg += "Coste no especificado ";            
+        }
+            
+        
+        if(entradas.isEmpty()){
+            error = true;
+            errorMsg += "Entradas no especificadas ";            
+        }
+
+        if(aforo.isEmpty()){
+            error = true;
+            errorMsg += "Aforo no especificado ";            
+        }
+
+        if(idcre.isEmpty()){
+            error = true;
+            errorMsg += "ID del crador no especificado ";            
+        }        
+        
+        if(desc.isEmpty()){
+            error = true;
+            errorMsg += "Descripcion no especificada ";            
+        }        
+        
+        
         Date fecha = new Date();
         Date fecha2 = new Date();
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         try {
             fecha = df.parse(fe);
         } catch (ParseException ex) {
-            
+            error = true;
         }
         
         try {
             fecha2 = df.parse(feReq);
         } catch (ParseException ex) {
-            
+            error = true;
         }
-        evento.setTitulo(titulo);
-        evento.setCoste(new Integer(coste));
-        evento.setNumfilas(new Integer(numfilas));
-        evento.setNumasientosporfila(new Integer(asifil));
-        evento.setDescripcion(desc);
-        evento.setIdCreador(u);
-        evento.setAsientosfijos(asiFijo.charAt(0));
-        evento.setEntradas(new Integer(entradas));
-        evento.setAforo(new Integer(aforo));
-        evento.setFecha(fecha);
-        evento.setFechares(fecha2);
-        this.eventoFacade.create(evento);
-        response.sendRedirect("ServletAdminMostrarUsuarios");
+        
+        if(asiFijo != null){
+         if(asiFijo.charAt(0) == 'N'){
+            numfilas = null;
+            asifil = null;
+        } else{
+            if(numfilas == null){
+                error = true;
+                errorMsg += "Numero de filas no especificado ";            
+            } else{
+                aux = Integer.parseInt(numfilas);
+            }
+
+            if(asifil == null){
+                error = true;
+                errorMsg += "Numero de asientos por fila no especificado ";            
+            } else {
+                aux2 = Integer.parseInt(asifil);
+            }
+          }           
+        } else{
+            error = true;
+            errorMsg += "Asientos fijos no especificados ";
+        }
+
+        
+        request.setAttribute("error", error);
+        request.setAttribute("errorMsg", errorMsg);
+        
+        if(!error){
+            Usuario u = this.usuarioFacade.find(new Integer(idcre));
+            Evento evento = new Evento();
+            evento.setTitulo(titulo);
+            evento.setCoste(new Integer(coste));
+            evento.setNumfilas(aux);
+            evento.setNumasientosporfila(aux2);
+            evento.setDescripcion(desc);
+            evento.setIdCreador(u);
+            evento.setAsientosfijos(asiFijo.charAt(0));
+            evento.setEntradas(new Integer(entradas));
+            evento.setAforo(new Integer(aforo));
+            evento.setFecha(fecha);
+            evento.setFechares(fecha2);
+            this.eventoFacade.create(evento);
+            RequestDispatcher rd = request.getRequestDispatcher("ServletAdminMostrarUsuarios");
+            rd.forward(request, response);
+        } else{
+            RequestDispatcher rd = request.getRequestDispatcher("AdminAgregarEvento.jsp");
+            rd.forward(request, response);           
+        }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

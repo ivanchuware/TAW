@@ -16,6 +16,16 @@
         <title>EvenTAW - Crear Evento</title>
     </head>
     <body>
+        <%
+            Boolean error = (Boolean)request.getAttribute("error");
+            String errorMsg = "";
+            if (error == null) {
+                error = false;
+            }
+            if (error) {
+                errorMsg = (String)request.getAttribute("errorMsg");
+            }
+        %>
         <h1>Crear Evento</h1>
               <div class="form">
               <form action="ServletAdminCrearEvento">
@@ -44,6 +54,15 @@
               <input type="text" id="idcre" name="idcre"></br>
               <label for="desc">Descripcion</label>
               <input type="text" id="desc" name="desc"></br>
+                <%
+                    if (error) {
+                %>
+                <div class="block">
+                    Error procesando datos: <%=errorMsg%>
+                </div>
+                <%
+                    }
+                %>
               <input type="submit" value="Guardar"/></br>
               </form>
         </div>

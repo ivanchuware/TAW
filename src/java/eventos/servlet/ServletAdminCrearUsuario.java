@@ -16,6 +16,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.ejb.EJB;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -46,35 +47,90 @@ public class ServletAdminCrearUsuario extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        Usuario u = new Usuario();
         String nombre = request.getParameter("nombre");
-        String ape = request.getParameter("apellidos");
-        String pas = request.getParameter("pass");
-        String dom = request.getParameter("dom");
-        String ciu = request.getParameter("ciudad");
-        String gen = request.getParameter("genero");
+        String apellido = request.getParameter("apellidos");
+        String password = request.getParameter("pass");
+        String domicilio = request.getParameter("dom");
+        String ciudad = request.getParameter("ciudad");
+        String sexo = request.getParameter("genero");
         String email = request.getParameter("email");
-        String f = request.getParameter("fecha");
+        String nacimiento = request.getParameter("fecha");
         String rol = request.getParameter("rol");
-        Roles r = this.rolesFacade.find(new Integer(rol));
+        Roles r;
+        boolean error = false;
+        String errorMsg = "";
+        if(rol == null){
+            error = true;
+            errorMsg += "Rol no especificado";
+        } else{
+            r = this.rolesFacade.find(new Integer(rol));
+        }
+  
         Date fecha = new Date();
+        
+        if (nombre.isEmpty()) {
+            error = true;
+            errorMsg += " Nombre vacío";
+        }
+        if (apellido.isEmpty()) {
+            error = true;
+            errorMsg += " Apellido vacío";
+        }
+        if (ciudad.isEmpty()) {
+            error = true;
+            errorMsg += " Ciudad vacía";
+        }
+        if (domicilio.isEmpty()) {
+            error = true;
+            errorMsg += " Domicilio vacío";
+        }
+        if (sexo == null) {
+            error = true;
+            errorMsg += " Sexo no especificado";
+        }
+        if (nacimiento.isEmpty()) {
+            error = true;
+            errorMsg += " Fecha de nacimiento no especificada";
+        }
+        if (email.isEmpty()) {
+            error = true;
+            errorMsg += " E-mail vacío";
+        }
+        if (password.isEmpty()) {
+            error = true;
+            errorMsg += " Contraseña vacía";
+        }        
+        
+        request.setAttribute("error", error);
+        request.setAttribute("errorMsg", errorMsg);        
+        
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            fecha = df.parse("f");
+            fecha = df.parse(nacimiento);
         } catch (ParseException ex) {
-            
+            error = true;
         }
-        u.setNombre(nombre);
-        u.setApellidos(ape);
-        u.setPassword(pas);
-        u.setDomicilio(dom);
-        u.setCiudad(ciu);
-        u.setEmail(email);
-        u.setNacimiento(fecha);
-        u.setGenero(gen.charAt(0));
-        u.setRol(r);
-        this.usuarioFacade.create(u);
-        response.sendRedirect("ServletAdminMostrarUsuarios");
+        
+        if(!error){
+            Usuario usuario = new Usuario();
+            usuario.setNombre(nombre);
+            usuario.setApellidos(apellido);
+            usuario.setCiudad(ciudad);
+            usuario.setEmail(email);
+            usuario.setGenero(sexo.charAt(0));
+            usuario.setPassword(password);
+            usuario.setNacimiento(fecha);
+            usuario.setDomicilio(domicilio);
+            this.usuarioFacade.create(usuario);
+            RequestDispatcher rd = request.getRequestDispatcher("ServletAdminMostrarUsuarios");
+            rd.forward(request, response);  
+        } else{
+            RequestDispatcher rd = request.getRequestDispatcher("AdminAgregarUsuario.jsp");
+            rd.forward(request, response);       
+        }
+
+        
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
