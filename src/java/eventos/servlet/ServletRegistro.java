@@ -128,6 +128,7 @@ public class ServletRegistro extends HttpServlet {
             usuario.setRol(rolesFacade.find(3));
             
             usuarioFacade.create(usuario);
+            response.sendRedirect("login.jsp");
          
         } else {
             RequestDispatcher rd = request.getRequestDispatcher("registro.jsp");
