@@ -43,7 +43,7 @@
                     sbeve = conversacion.getIdUsuario2();
                 }
                 else {
-                    sbeve = conversacion.getIdUsuario2();
+                    sbeve = conversacion.getIdUsuario1();
                 }
                 String nombrecompleto = sbeve.getNombre() + " " + sbeve.getApellidos();
         %>            
@@ -77,7 +77,7 @@
                     sbeve = conversacion.getIdUsuario2();
                 }
                 else {
-                    sbeve = conversacion.getIdUsuario2();
+                    sbeve = conversacion.getIdUsuario1();
                 }
                 String nombrecompleto = sbeve.getNombre() + " " + sbeve.getApellidos();
         %>            
