@@ -16,6 +16,16 @@
         <title>EvenTAW - Crear Usuario</title>
     </head>
     <body>
+        <%
+            Boolean error = (Boolean)request.getAttribute("error");
+            String errorMsg = "";
+            if (error == null) {
+                error = false;
+            }
+            if (error) {
+                errorMsg = (String)request.getAttribute("errorMsg");
+            }
+        %>
         <h1>Crear nuevo usuario </h1>
         <div class="form">
               <form action="ServletAdminCrearUsuario">
@@ -45,6 +55,15 @@
               <input type="radio" id="rol" name="rol" value="3" >Usuario</br>
               <input type="radio" id="rol" name="rol" value="4" >Teleoperador</br>
               <input type="radio" id="rol" name="rol" value="5" >Analista </br>
+                <%
+                    if (error) {
+                %>
+                <div class="block">
+                    Error procesando datos: <%=errorMsg%>
+                </div>
+                <%
+                    }
+                %>
               <input type="submit" value="Guardar"/></br>
               </form>
         </div>

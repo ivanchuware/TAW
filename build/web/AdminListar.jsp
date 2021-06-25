@@ -20,11 +20,6 @@
         <title>EvenTAW - LIstar</title>
     </head>
     <body>
-            <ul>
-            <li><a class="active" href="inicio.jsp">Inicio</a></li>
-            <li><a href="menuConversaciones.jsp">Ticket de ayuda</a></li>
-            <li style="float:right"><a href="about.asp">Mi cuenta</a></li>
-        </ul>
         <pre></pre>
         <form action="ServletAdminMostrarUsuarios">
             <%

@@ -30,7 +30,7 @@
                 <tr>
                     <%                    
                         String horayminuto = m.getHora() + ":" + m.getMinuto();
-                        if (m.getIdUsuario().getIdUsuario() == conv.getIdUsuario2().getIdUsuario()) {
+                        if (m.getIdUsuario().getIdUsuario() == conv.getIdUsuario1().getIdUsuario()) {
                     %>
 
                     <td align="center"><%=m.getMensaje()%></td>
